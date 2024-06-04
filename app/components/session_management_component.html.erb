@@ -1,0 +1,27 @@
+<h3>New session</h3>
+<div class ="card">
+    <div class="card-body">
+        <%= form_with model:@session do |form| %>
+            <div class="mb-3">
+                <%= form.label :end_point, 'End Point:' %>
+                <%= form.text_field(:end_point, placeholder: 'End Point') %>
+            </div>
+            <div class="mb-3">
+                <%= form.label :channel, 'Channel:'  %>
+                <%= form.text_field(:channel, placeholder: 'Channel') %>
+            </div>
+            <div class="mb-3">
+                <%= form.label :topic, 'Topic:' %>
+                <%= form.text_field(:topic, placeholder: 'Topic') %>
+            </div>
+            <div class="mb-3">
+                <%= form.label :message_type, 'Message Type:' %>
+                <%= form.text_field(:message_type, placeholder: 'Message Type') %>
+            </div>
+            <div class="text-center">
+                <%= link_to "Back", :back %>
+                <%= form.submit 'Create Session', class:"btn formsubmitbtn"%>
+            </div>
+        <% end %>
+    </div>
+</div>

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  
+  <body>
+
+    <main role="main">
+      <section class="jumbotron text-center">
+        <div class="container">
+          <h1 class="jumbotron-heading">Risk Demonstration DashBoard</h1>
+          <p class="lead text-muted">Monitoring and Analysing risks.</p>
+          <div class="btn-group gap-3">
+            <%# Below buttons do not work have to map correspondingly later %>
+             <p class="text-muted">Trigger an Event.</p>
+            <%= button_to "Baseline Risk Info", load_alarms_component_path, method: 'get', class: "btn btn-secondary my-2" %>
+            <%= button_to "Failure Event", load_alarms_component_path, method: 'get', class: "btn btn-secondary my-2" %>
+            <%= button_to "M1 Active Failed", load_alarms_component_path, method: 'get', class: "btn btn-secondary my-2" %>
+            <%= button_to "M2 StandBy Active", load_alarms_component_path, method: 'get', class: "btn btn-secondary my-2" %>
+            <%= button_to "M2 Risk Info Update", load_alarms_component_path, method: 'get', class: "btn btn-secondary my-2" %>
+            <%= button_to "New Motor Installed", load_alarms_component_path, method: 'get', class: "btn btn-secondary my-2" %>
+            <%= button_to "Updated Operation Risk Info", load_alarms_component_path, method: 'get', class: "btn btn-secondary my-2" %>
+            <%= button_to "Updated Risk Info", load_alarms_component_path, method: 'get', class: "btn btn-secondary my-2" %>
+            <%= button_to "Updated Last Risk Info", load_alarms_component_path, method: 'get', class: "btn btn-secondary my-2" %>
+          </div>
+        </div>
+      </section>
+
+      <div class="album py-5 bg-light">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="card mb-4 box-shadow">
+                <%= render inline: Rails.root.join('app/assets/images/resource_breakdown_structure.svg').read %>
+                <div class="card-body">
+                  <p class="card-text">Break Down Structures</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <%= button_to "View", load_equipment_component_path, method:'get', class:"btn btn-sm btn-outline-secondary" %>
+                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">4</span>
+                    </div>
+                    <small class="text-muted"></small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card mb-4 box-shadow">
+                <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=Thumbnail" alt="Card image cap">
+                <div class="card-body">
+                  <p class="card-text">Measurements</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <%= button_to "View", load_measurements_component_path, method:'get', class:"btn btn-sm btn-outline-secondary" %>
+                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">3</span>
+                    </div>
+                    <small class="text-muted"></small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card mb-4 box-shadow">
+                <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=Thumbnail" alt="Card image cap">
+                <div class="card-body">
+                  <p class="card-text">Alarms</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <%= button_to "View", load_alarms_component_path, method: 'get', class: "btn btn-sm btn-outline-secondary" %>
+                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">2</span>
+                    </div>
+                    <small class="text-muted"></small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="card mb-4 box-shadow">
+                <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=Thumbnail" alt="Card image cap">
+                <div class="card-body">
+                  <p class="card-text">Active Components</p>
+                  <div class="btn-group">
+                      <%= button_to "View", load_active_component_path, method: 'get', class: "btn btn-sm btn-outline-secondary" %>
+                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">1</span>
+                  </div>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted"></small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card mb-4 box-shadow">
+                <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=Thumbnail" alt="Card image cap">
+                <div class="card-body">
+                  <p class="card-text">StandBy Component</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                      <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                    </div>
+                    <small class="text-muted"></small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

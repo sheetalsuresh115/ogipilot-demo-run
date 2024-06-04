@@ -1,0 +1,25 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  session_id: MyString
+  : MyString
+  end_point: MyString
+  : MyString
+  channel: MyString
+  : MyString
+  topic: MyString
+  : MyString
+  message_type: MyString
+  : MyString
+
+two:
+  session_id: MyString
+  : MyString
+  end_point: MyString
+  : MyString
+  channel: MyString
+  : MyString
+  topic: MyString
+  : MyString
+  message_type: MyString
+  : MyString
