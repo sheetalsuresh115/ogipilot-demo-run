@@ -23,7 +23,10 @@ class RiskDashBoardController < ApplicationController
     @active = Equipment.all
   end
 
+  def load_standby_component
+    @standby = Equipment.all
+  end
+
   def load_new_session_management_component
-    @sessions = Session.all
   end
 end

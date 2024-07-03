@@ -1,9 +1,8 @@
-
 <div class="container">
     <div class="row">
         <div class="col-md-8 offset-md-2 mt-5 fancy-forms">
             <div class="text-end">
-                <%= button_to new_session_management_path, method: 'get', class: "btn" do%>
+                <%= button_to new_session_path, method: :get, class: "btn" do%>
                 <h1><i class="bi bi-building-fill-add"></i></h1>
                 <% end %>
             </div>
@@ -24,16 +23,36 @@
                                 <th>Channel</th>
                                 <th>Topic</th>
                                 <th>End Point</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <% @session.each do |session| %>
+                            <% @sessions.each do |session| %>
                                 <tr>
-                                    <td><%= session.session_id %></td>
+                                    <td><%= session.id %></td>
                                     <td><%= session.channel %></td>
                                     <td><%= session.topic %></td>
                                     <td><%= session.end_point %></td>
-                                    <td> --- </td>
+                                    <td>
+
+                                        <% if session.session_id.present? %>
+                                            <%= button_to close_session_path(session), method: :get, class: "btn" do%>
+                                                <h4><i class="bi bi-door-open-fill"></i></h4>
+                                            <% end %>
+                                        <% else %>
+                                            <%= button_to open_session_path(session), method: :get, class: "btn" do%>
+                                                <h4><i class="bi bi-door-closed-fill"></i></h4>
+                                            <% end %>
+                                        <% end %>
+
+                                        <%= link_to edit_session_path(session) do %>
+                                            <i class="bi bi-pencil"></i>
+                                        <% end %>
+                                        <%= link_to session_path(session), data: { turbo_method: :delete,
+                                            turbo_confirm: "Are you sure?" } do %>
+                                            <i class="bi bi-trash"></i>
+                                        <% end %>
+                                    </td>
                                 </tr>
                             <% end %>
                         </tbody>

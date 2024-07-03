@@ -47,11 +47,23 @@ gem "bootsnap", require: false
 
 #ViewComponents
 gem "view_component"
+gem "typhoeus"
+#RDBG debug
+# gem "debug", require: false
 
+gem "ruby-lsp"
+gem "rubocop"
+
+gem 'rspec-expectations', '~> 3.13.0'
+gem 'rspec', '~> 3.10'
 gem "rspec-core"
 
-#The ISBM Adaptor provides a Ruby API for the OpenO&M ws-ISBM specification.
-gem "isbm_adaptor"
+#ISBM v2 Adaptor (REST) - Added this locally
+gem 'isbm2_adaptor_rest', '~> 2.0.1.2'
+
+#Below is needed to trigger NotificationService
+gem 'rack', '~> 2.0', '>= 2.0.6'
+gem 'rack-contrib', '~> 2.1', '>= 2.1.0'
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"

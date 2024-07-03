@@ -6,13 +6,15 @@ Rails.application.routes.draw do
   get 'risk_dash_board/load_measurements_component', to: 'risk_dash_board#load_measurements_component', as: :'load_measurements_component'
   get 'risk_dash_board/load_alarms_component_path', to: 'risk_dash_board#load_alarms_component', as: :'load_alarms_component'
   get 'risk_dash_board/load_active_component_path', to: 'risk_dash_board#load_active_component', as: :'load_active_component'
-  get 'risk_dash_board/session_management', to: 'risk_dash_board#session_management', as: :'session_management'
-  get 'risk_dash_board/new_session_management', to: 'risk_dash_board#load_new_session_management_component', as: :'new_session_management'
   get 'risk_dash_board/request_response', to: 'risk_dash_board#request_response', as: :'request_response'
   get 'risk_dash_board/publish_subscribe', to: 'risk_dash_board#publish_subscribe', as: :'publish_subscribe'
-  resources :risk_dash_board
-  resources :equipments
-  resources :session_management
+
+  resources :sessions do
+    get 'open', on: :member
+    get 'close', on: :member
+  end
+
+  resources :risk_dash_board, :equipments, :sessions
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

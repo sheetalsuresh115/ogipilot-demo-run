@@ -1,0 +1,47 @@
+<% if @session.session_id.present? %>
+    <h3>Edit session</h3>
+<% else %>
+    <h3>New session</h3>
+<% end %>
+<div class ="card">
+    <div class="card-body">
+        <%= form_with model: @session do |form| %>
+            <div class="mb-3 ">
+                <%= form.label :end_point, 'End Point:' %>
+                <%= form.text_field(:end_point, placeholder: 'End Point') %>
+                <% @session.errors.full_messages_for(:end_point).each do |message| %>
+                    <div class="text-danger"><%= message %></div>
+                <% end %>
+            </div>
+            <div class="mb-3">
+                <%= form.label :channel, 'Channel:'  %>
+                <%= form.text_field(:channel, placeholder: 'Channel') %>
+                <% @session.errors.full_messages_for(:channel).each do |message| %>
+                    <div class="text-danger"><%= message %></div>
+                <% end %>
+            </div>
+            <div class="mb-3">
+                <%= form.label :topic, 'Topic:' %>
+                <%= form.text_field(:topic, placeholder: 'Topic') %>
+                <% @session.errors.full_messages_for(:topic).each do |message| %>
+                    <div class="text-danger"><%= message %></div>
+                <% end %>
+            </div>
+            <div class="mb-3">
+                <%= form.label :message_type, 'Message Type:' %>
+                <%= form.text_field(:message_type, placeholder: 'Message Type') %>
+                <% @session.errors.full_messages_for(:message_type).each do |message| %>
+                    <div class="text-danger"><%= message %></div>
+                <% end %>
+            </div>
+            <div class="text-center">
+                <%= link_to "Back", :back %>
+                <% if @session.session_id.present? %>
+                    <%= form.submit 'Update Session', class:"btn formsubmitbtn" %>
+                <% else %>
+                    <%= form.submit 'Create Session', class:"btn formsubmitbtn" %>
+                <% end %>
+            </div>
+        <% end %>
+    </div>
+</div>
