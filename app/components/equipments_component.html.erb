@@ -8,6 +8,7 @@
           <th scope="col">UUID</th>
           <th scope="col">Id In Source</th>
           <th scope="col">Short Name</th>
+          <th scope="col">Functional Location</th>
         </tr>
       </thead>
 
@@ -19,12 +20,22 @@
               <td><%= equipment.uuid %></td>
               <td><%= equipment.id_in_source %></td>
               <td><%= equipment.short_name %></td>
+              <td><%= equipment.functional_location_id %></td>
               <%# <td><%= link_to "Show", equipment</td> %>
               <!--<td><%= link_to "Edit", edit_equipment_path(equipment) %></td> -->
               <%# <td><%= link_to "Destroy", equipment, data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }</td> %>
           </div>
         </tr>
         <% end %>
+        <%= @messages.id %>
+        <%= @messages.media_type %>
+        <%= @messages.content %>
+
+        <%# <% @messages.each do |read_message| %>
+        <%#  <%= read_message.message_id %>
+        <%#  <%= read_message.message_type %>
+        <%#  <%= read_message.message_content %>
+        <%# <% end %>
       </tbody>
     </table>
 

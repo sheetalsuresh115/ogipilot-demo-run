@@ -4,12 +4,11 @@
     <main role="main">
       <section class="jumbotron text-center">
         <div class="container">
-          <h1 class="jumbotron-heading">Risk Demonstration DashBoard</h1>
           <p class="lead text-muted">Monitoring and Analysing risks.</p>
           <div class="btn-group gap-3">
             <%# Below buttons do not work have to map correspondingly later %>
              <p class="text-muted">Trigger an Event.</p>
-            <%= button_to "Baseline Risk Info", load_alarms_component_path, method: 'get', class: "btn btn-secondary my-2" %>
+            <%= button_to "Baseline Risk Info", baseline_risk_path, method: 'get', class: "btn btn-secondary my-2" %>
             <%= button_to "Failure Event", load_alarms_component_path, method: 'get', class: "btn btn-secondary my-2" %>
             <%= button_to "M1 Active Failed", load_alarms_component_path, method: 'get', class: "btn btn-secondary my-2" %>
             <%= button_to "M2 StandBy Active", load_alarms_component_path, method: 'get', class: "btn btn-secondary my-2" %>
@@ -33,7 +32,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
                       <%= button_to "View", load_equipment_component_path, method:'get', class:"btn btn-sm btn-outline-secondary" %>
-                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">4</span>
+                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success"><%= $break_down_structure_notification %></span>
                     </div>
                     <small class="text-muted"></small>
                   </div>
@@ -49,7 +48,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
                       <%= button_to "View", load_measurements_component_path, method:'get', class:"btn btn-sm btn-outline-secondary" %>
-                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">3</span>
+                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success"><%= $measurements_notification %></span>
                     </div>
                     <small class="text-muted"></small>
                   </div>
@@ -64,7 +63,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
                       <%= button_to "View", load_alarms_component_path, method: 'get', class: "btn btn-sm btn-outline-secondary" %>
-                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">2</span>
+                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success"><%= $alarms_notification %></span>
                     </div>
                     <small class="text-muted"></small>
                   </div>
@@ -79,7 +78,7 @@
                   <p class="card-text">Active Components</p>
                   <div class="btn-group">
                       <%= button_to "View", load_active_component_path, method: 'get', class: "btn btn-sm btn-outline-secondary" %>
-                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">1</span>
+                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success"><%= $active_components_notification %></span>
                   </div>
                   <div class="d-flex justify-content-between align-items-center">
                     <small class="text-muted"></small>
@@ -94,10 +93,12 @@
                   <p class="card-text">StandBy Component</p>
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                      <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                      <%= button_to "View", load_active_component_path, method: 'get', class: "btn btn-sm btn-outline-secondary" %>
+                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success"><%= $standby_components_notification %></span>
                     </div>
-                    <small class="text-muted"></small>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <small class="text-muted"></small>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -1,4 +1,4 @@
-<% if @session.session_id.present? %>
+<% if @session.provider_session_id.present? %>
     <h3>Edit session</h3>
 <% else %>
     <h3>New session</h3>
@@ -36,7 +36,7 @@
             </div>
             <div class="text-center">
                 <%= link_to "Back", :back %>
-                <% if @session.session_id.present? %>
+                <% if @session.provider_session_id.present? %>
                     <%= form.submit 'Update Session', class:"btn formsubmitbtn" %>
                 <% else %>
                     <%= form.submit 'Create Session', class:"btn formsubmitbtn" %>

@@ -147,3 +147,7 @@ vendor/cache/websocket-driver-0.7.6.gem
 vendor/cache/websocket-extensions-0.1.5.gem
 vendor/cache/xpath-3.2.0.gem
 vendor/cache/zeitwerk-2.6.14.gem
+
+config/settings.local.yml
+config/settings/*.local.yml
+config/environments/*.local.yml

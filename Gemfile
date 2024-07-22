@@ -48,6 +48,7 @@ gem "bootsnap", require: false
 #ViewComponents
 gem "view_component"
 gem "typhoeus"
+gem "config"
 #RDBG debug
 # gem "debug", require: false
 
@@ -89,3 +90,5 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem "sidekiq", "~> 7.3"

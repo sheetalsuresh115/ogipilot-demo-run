@@ -18,7 +18,7 @@
           <header>
             <div class="navbar navbar-dark bg-dark box-shadow">
               <div class="container d-flex justify-content-between">
-                <a href="#" class="navbar-brand d-flex align-items-center">
+                <a href="/" class="navbar-brand d-flex align-items-center">
                   <strong >Risk Demonstration DashBoard</strong>
                 </a>
                 <div class="dropdown">
@@ -26,7 +26,8 @@
                     <span class="navbar-toggler-icon"></span>
                   </button>
                   <ul class="dropdown-menu">
-                    <li><%= button_to "Session Management", sessions_path, method: 'get', class: "btn" %></li>
+                    <li><%= button_to "Session Management", ogi_pilot_sessions_path, method: 'get', class: "btn" %></li>
+                    <li><%= button_to "Job Management", sidekiq_web_path, method: 'get', class: "btn" %></li>
                   </ul>
                 </div>
               </div>
