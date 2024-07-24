@@ -1,4 +1,3 @@
-require 'securerandom'
 require 'isbm2_adaptor_rest'
 require 'isbm_adaptor_common'
 
@@ -12,7 +11,7 @@ class OgiPilotSessionsController < ApplicationController
   end
 
   def create
-    @session = OgiPilotSession.new(session_params)
+    @session = OgiPilotSession.new(ogi_pilot_session_params)
     if @session.save
       redirect_to ogi_pilot_sessions_path, notice: 'Session was successfully created.'
     else
@@ -40,15 +39,11 @@ class OgiPilotSessionsController < ApplicationController
   def update
     @session = OgiPilotSession.find(params[:id])
 
-    if @session.update(session_params)
+    if @session.update(ogi_pilot_session_params)
       redirect_to ogi_pilot_sessions_path, notice: 'Session was successfully updated.'
     else
       render :edit, status: :unprocessable_entity
     end
-  end
-
-  def session_management
-    @session = OgiPilotSession.all
   end
 
   def destroy
@@ -80,7 +75,6 @@ class OgiPilotSessionsController < ApplicationController
   end
 
   def close
-    debugger
     @session = OgiPilotSession.find(params[:id])
     puts "\n*** Closing subscription session on open channel"
     begin
@@ -98,7 +92,7 @@ class OgiPilotSessionsController < ApplicationController
   end
 
   private
-    def session_params
-      params.require(:session).permit(:end_point, :channel, :topic, :message_type)
+    def ogi_pilot_session_params
+      params.require(:ogi_pilot_session).permit(:end_point, :channel, :topic, :message_type)
     end
 end

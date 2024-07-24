@@ -14,10 +14,6 @@ class RiskDashboardsController < ApplicationController
     @equipments = Equipment.all
   end
 
-  def load_equipment_component
-    @equipments = Equipment.all
-  end
-
   def load_measurements_component
     @measurements = Equipment.all
   end
@@ -37,13 +33,17 @@ class RiskDashboardsController < ApplicationController
   def baseline_risk
     begin
       @session = OgiPilotSession.find_by topic: "BaseLineRisk"
-      publish_client = IsbmRestAdaptor::ProviderPublication.new
-      #In the future, this is where the BOD that contains Risk Data should be published.
-      posted_message_id = publish_client.post_publication(@session.provider_session_id, 'Test content Part 2', [@session.topic])
-      puts "Posted message: #{posted_message_id}"
+      if @session.provider_session_id.present?
+        publish_client = IsbmRestAdaptor::ProviderPublication.new
+        #In the future, this is where the BOD that contains Risk Data should be published.
+        posted_message_id = publish_client.post_publication(@session.provider_session_id, 'Test content Part 2', [@session.topic])
+        puts "Posted message: #{posted_message_id}"
 
-      $break_down_structure_notification = $break_down_structure_notification + 1
-      redirect_to risk_dashboards_path, notice: 'Triggering Risk Info BreakDown'
+        $break_down_structure_notification = $break_down_structure_notification + 1
+        redirect_to risk_dashboards_path, notice: 'Triggering Risk Info BreakDown'
+      else
+        redirect_to risk_dashboards_path, alert: 'Please open a valid session!'
+      end
 
     rescue IsbmAdaptor::IsbmFault => e
       fault_message = extract_fault_message(e.response_body)
@@ -51,8 +51,5 @@ class RiskDashboardsController < ApplicationController
       return check_session_fault_message_not_found(fault_message) if e.code == 404
       handle_session_access_api_error(e.code, fault_message)
     end
-  end
-
-  def load_new_session_management_component
   end
 end

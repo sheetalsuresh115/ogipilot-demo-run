@@ -34,6 +34,56 @@
                     <div class="text-danger"><%= message %></div>
                 <% end %>
             </div>
+            <div class="mb-3 ">
+                <%= form.label :segment_uuid, 'Segment UUID:' %>
+                <%= form.text_field(:segment_uuid, placeholder: 'Segment UUID') %>
+                <% @equipment.errors.full_messages_for(:segment_uuid).each do |message| %>
+                    <div class="text-danger"><%= message %></div>
+                <% end %>
+            </div>
+            <div class="mb-3">
+                <%= form.label :site_id, 'Site Id:'  %>
+                <%= form.text_field(:site_id, placeholder: 'Site Id') %>
+                <% @equipment.errors.full_messages_for(:site_id).each do |message| %>
+                    <div class="text-danger"><%= message %></div>
+                <% end %>
+            </div>
+            <div class="mb-3">
+                <%= form.label :properties, 'Properties:' %>
+                <%= form.text_field(:properties, placeholder: 'Properties') %>
+                <% @equipment.errors.full_messages_for(:properties).each do |message| %>
+                    <div class="text-danger"><%= message %></div>
+                <% end %>
+            </div>
+            <div class="mb-3">
+                <%= form.label :installed_at, 'Installed At:' %>
+                <%= form.text_field(:installed_at, placeholder: 'Installed At') %>
+                <% @equipment.errors.full_messages_for(:installed_at).each do |message| %>
+                    <div class="text-danger"><%= message %></div>
+                <% end %>
+            </div>
+            <div class="mb-3">
+                <%= form.label :uninstalled_at, 'Uninstalled At:' %>
+                <%= form.text_field(:uninstalled_at, placeholder: 'Uninstalled At') %>
+                <% @equipment.errors.full_messages_for(:uninstalled_at).each do |message| %>
+                    <div class="text-danger"><%= message %></div>
+                <% end %>
+            </div>
+            <div class="mb-3">
+                <%= form.label :category, 'Category:' %>
+                <%= form.text_field(:category, placeholder: 'Category') %>
+                <% @equipment.errors.full_messages_for(:category).each do |message| %>
+                    <div class="text-danger"><%= message %></div>
+                <% end %>
+            </div>
+            <div class="mb-3">
+                <%= form.label :bod_content, 'Bod Content:' %>
+                <%= form.text_field(:bod_content, placeholder: 'Bod Content') %>
+                <% @equipment.errors.full_messages_for(:bod_content).each do |message| %>
+                    <div class="text-danger"><%= message %></div>
+                <% end %>
+            </div>
+
             <div class="text-center">
                 <%= link_to "Back", :back %>
                 <% if @equipment.uuid.present? %>

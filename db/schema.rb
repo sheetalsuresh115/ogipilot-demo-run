@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_17_070004) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_24_043829) do
   create_table "equipment", force: :cascade do |t|
     t.string "uuid"
     t.string "id_in_source"
@@ -26,7 +26,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_17_070004) do
     t.string "bod_content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["uuid"], name: "index_equipment_on_uuid", unique: true
   end
 
   create_table "ogi_pilot_sessions", force: :cascade do |t|

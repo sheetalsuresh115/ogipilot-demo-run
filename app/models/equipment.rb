@@ -1,13 +1,14 @@
 class Equipment < ApplicationRecord
-  # uuid: string, unique: true
-  # id_in_source: string
-  # functional_location_id: string
-  # segment_uuid: string
-  # site_id: string
-  # short_name: string
-  # properties: text
-  # installed_at: datetime
-  # uninstalled_at: datetime
-  # category: string
-  # bod_content:string
+  validates :uuid, presence: true
+  validates :id_in_source, presence: true
+  validates :functional_location_id, presence: true
+  validates :short_name, presence: true
+  validates :segment_uuid, presence: true
+  validates :site_id, presence: true
+  validates :properties, presence: true
+  validates :installed_at, presence: true
+  validates :uninstalled_at, presence: true
+  validates :category, presence: true
+  validates :bod_content, presence: true
+
 end
