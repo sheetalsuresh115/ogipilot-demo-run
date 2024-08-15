@@ -17,6 +17,7 @@ class RiskDashboardsController < ApplicationController
     # Assuming that once the SyncMeasurement gets deserialized into an object,
     # we could fetch the timestamp and measurement data from it.
 
+    #TBD - websocket + live data
     timestamp_labels = []
     10.times do |i|
       timestamp_labels << (Time.current + i.minutes).strftime("%H:%M:%p")
