@@ -6,9 +6,9 @@ Rails.application.routes.draw do
 
   controller :risk_dashboards do
     get 'load_measurements_component', action: :load_measurements_component, as: :load_measurements_component
+    # load_alarms_component_path - Just a placeholder - will remove it once the other trigger events are implemented
     get 'load_alarms_component_path', action: :load_alarms_component, as: :load_alarms_component
     get 'load_active_component_path', action: :load_active_component, as: :load_active_component
-    get 'request_response', action: :request_response, as: :request_response
     get 'publish_subscribe', action: :publish_subscribe, as: :publish_subscribe
     get 'baseline_risk', action: :baseline_risk, as: :baseline_risk
   end
