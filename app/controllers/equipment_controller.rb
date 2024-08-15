@@ -37,7 +37,7 @@ class EquipmentController < ApplicationController
 
   def edit
     @equipment = Equipment.find(params[:id])
-    render EquipmentCreationComponent.new(equipment: @equipment, source: params[:source])
+    @source = params[:source]
   end
 
   def update

@@ -34,7 +34,6 @@ class OgiPilotSessionsController < ApplicationController
 
   def edit
     @session = OgiPilotSession.find(params[:id])
-    render SessionCreationComponent.new(session: @session)
   end
 
   def update
