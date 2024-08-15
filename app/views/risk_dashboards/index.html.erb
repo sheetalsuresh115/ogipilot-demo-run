@@ -5,19 +5,6 @@
       <section class="jumbotron text-center">
         <div class="container">
           <p class="lead text-muted">Monitoring and Analysing risks.</p>
-          <div class="btn-group gap-3">
-            <%# Below buttons do not work have to map correspondingly later %>
-             <p class="text-muted">Trigger an Event.</p>
-            <%= button_to "Baseline Risk Info", baseline_risk_path, method: 'get', class: "btn btn-secondary my-2" %>
-            <%= button_to "Failure Event", load_alarms_component_path, method: 'get', class: "btn btn-secondary my-2" %>
-            <%= button_to "M1 Active Failed", load_alarms_component_path, method: 'get', class: "btn btn-secondary my-2" %>
-            <%= button_to "M2 StandBy Active", load_alarms_component_path, method: 'get', class: "btn btn-secondary my-2" %>
-            <%= button_to "M2 Risk Info Update", load_alarms_component_path, method: 'get', class: "btn btn-secondary my-2" %>
-            <%= button_to "New Motor Installed", load_alarms_component_path, method: 'get', class: "btn btn-secondary my-2" %>
-            <%= button_to "Updated Operation Risk Info", load_alarms_component_path, method: 'get', class: "btn btn-secondary my-2" %>
-            <%= button_to "Updated Risk Info", load_alarms_component_path, method: 'get', class: "btn btn-secondary my-2" %>
-            <%= button_to "Updated Last Risk Info", load_alarms_component_path, method: 'get', class: "btn btn-secondary my-2" %>
-          </div>
         </div>
       </section>
 
@@ -26,12 +13,14 @@
           <div class="row">
             <div class="col-md-4">
               <div class="card mb-4 box-shadow">
-                <%= render inline: Rails.root.join('app/assets/images/resource_breakdown_structure.svg').read %>
+                <%# <%= image_tag 'resource_breakdown_structure.svg' %>
+                <%# <%= render inline: Rails.root.join('app/assets/images/resource_breakdown_structure.svg').read %>
+                <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=Break Down Structures" alt="Card image cap">
                 <div class="card-body">
-                  <p class="card-text">Break Down Structures</p>
+                  <%# <p class="card-text">Break Down Structures</p> %>
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                      <%= button_to "View", equipment_index_path, method:'get', class:"btn btn-sm btn-outline-secondary" %>
+                      <%= button_to "View", equipment_index_path(source: "BreakDownStructures"), method:'get', class:"btn btn-sm btn-outline-secondary" %>
                       <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success"><%= $break_down_structure_notification %></span>
                     </div>
                     <small class="text-muted"></small>
@@ -44,7 +33,7 @@
                 <%# <%= render inline: Rails.root.join('app/assets/images/resource_breakdown_structure.svg').read %>
                 <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=Measurements" alt="Card image cap">
                 <div class="card-body">
-                  <p class="card-text">Measurements</p>
+                  <%# <p class="card-text">Measurements</p> %>
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
                       <%= button_to "View", load_measurements_component_path, method:'get', class:"btn btn-sm btn-outline-secondary" %>
@@ -59,10 +48,10 @@
               <div class="card mb-4 box-shadow">
                 <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=Alarms" alt="Card image cap">
                 <div class="card-body">
-                  <p class="card-text">Alarms</p>
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                      <%= button_to "View", load_alarms_component_path, method: 'get', class: "btn btn-sm btn-outline-secondary" %>
+                      <%= link_to "View", equipment_index_path(source: "Alarms"), method:'get', class:"btn btn-sm btn-outline-secondary" %>
+                      <%# <%= button_to "View", load_alarms_component_path, method: 'get', class: "btn btn-sm btn-outline-secondary" %>
                       <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success"><%= $alarms_notification %></span>
                     </div>
                     <small class="text-muted"></small>
@@ -73,32 +62,16 @@
 
             <div class="col-md-4">
               <div class="card mb-4 box-shadow">
-                <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=Active Components" alt="Card image cap">
+                <%# <%= image_tag 'standby.png' %>
+                <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=Active and StandBy Components" alt="Card image cap">
                 <div class="card-body">
-                  <p class="card-text">Active Components</p>
+                  <%# <p class="card-text">Components</p> %>
                   <div class="btn-group">
                       <%= button_to "View", load_active_component_path, method: 'get', class: "btn btn-sm btn-outline-secondary" %>
                       <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success"><%= $active_components_notification %></span>
                   </div>
                   <div class="d-flex justify-content-between align-items-center">
                     <small class="text-muted"></small>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="card mb-4 box-shadow">
-                <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=StandBy Components" alt="Card image cap">
-                <div class="card-body">
-                  <p class="card-text">StandBy Component</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <%= button_to "View", load_active_component_path, method: 'get', class: "btn btn-sm btn-outline-secondary" %>
-                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success"><%= $standby_components_notification %></span>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                      <small class="text-muted"></small>
-                    </div>
                   </div>
                 </div>
               </div>

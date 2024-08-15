@@ -56,34 +56,20 @@
                 <% end %>
             </div>
             <div class="mb-3">
-                <%= form.label :installed_at, 'Installed At:' %>
-                <%= form.text_field(:installed_at, placeholder: 'Installed At') %>
-                <% @equipment.errors.full_messages_for(:installed_at).each do |message| %>
+                <%= form.label :status_id, 'Status:' %>
+                <%= form.text_field(:status_id, placeholder: 'Status') %>
+                <% @equipment.errors.full_messages_for(:status_id).each do |message| %>
                     <div class="text-danger"><%= message %></div>
                 <% end %>
             </div>
             <div class="mb-3">
-                <%= form.label :uninstalled_at, 'Uninstalled At:' %>
-                <%= form.text_field(:uninstalled_at, placeholder: 'Uninstalled At') %>
-                <% @equipment.errors.full_messages_for(:uninstalled_at).each do |message| %>
+                <%= form.label :alarm_id, 'Alarm Status:' %>
+                <%= form.text_field(:alarm_id, placeholder: 'Alarm Status') %>
+                <% @equipment.errors.full_messages_for(:alarm_id).each do |message| %>
                     <div class="text-danger"><%= message %></div>
                 <% end %>
             </div>
-            <div class="mb-3">
-                <%= form.label :category, 'Category:' %>
-                <%= form.text_field(:category, placeholder: 'Category') %>
-                <% @equipment.errors.full_messages_for(:category).each do |message| %>
-                    <div class="text-danger"><%= message %></div>
-                <% end %>
-            </div>
-            <div class="mb-3">
-                <%= form.label :bod_content, 'Bod Content:' %>
-                <%= form.text_field(:bod_content, placeholder: 'Bod Content') %>
-                <% @equipment.errors.full_messages_for(:bod_content).each do |message| %>
-                    <div class="text-danger"><%= message %></div>
-                <% end %>
-            </div>
-
+            <%= hidden_field_tag :source, @source %>
             <div class="text-center">
                 <%= link_to "Back", :back %>
                 <% if @equipment.uuid.present? %>

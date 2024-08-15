@@ -3,7 +3,8 @@ require 'sidekiq/web'
 Rails.application.routes.draw do
 
   root 'risk_dashboards#index'
-  resources :risk_dashboards, :ogi_pilot_sessions, :equipment
+
+  #equipment is plural and hence equipment_index_path is the index path to be referred.
 
   get 'risk_dashboards/load_measurements_component', to: 'risk_dashboards#load_measurements_component', as: :'load_measurements_component'
   get 'risk_dashboards/load_alarms_component_path', to: 'risk_dashboards#load_alarms_component', as: :'load_alarms_component'
@@ -16,7 +17,8 @@ Rails.application.routes.draw do
     get 'open', on: :member
     get 'close', on: :member
   end
-
+  resources :risk_dashboards, :ogi_pilot_sessions, :equipment
+  get 'check_for_risk', to: 'equipment#check_for_risk'
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check

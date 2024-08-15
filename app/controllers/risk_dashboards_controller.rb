@@ -7,7 +7,6 @@ class RiskDashboardsController < ApplicationController
   $standby_components_notification = 0
 
   def index
-
   end
 
   def show
@@ -15,7 +14,16 @@ class RiskDashboardsController < ApplicationController
   end
 
   def load_measurements_component
-    @measurements = Equipment.all
+    # Assuming that once the SyncMeasurement gets deserialized into an object,
+    # we could fetch the timestamp and measurement data from it.
+
+    timestamp_labels = []
+    10.times do |i|
+      timestamp_labels << (Time.current + i.minutes).strftime("%H:%M:%p")
+    end
+
+    @labels = timestamp_labels
+    @datasets = [12, 19, 3, 5, 2, 12, 4, 8, 2, 20]
   end
 
   def load_alarms_component
@@ -33,14 +41,24 @@ class RiskDashboardsController < ApplicationController
   def baseline_risk
     begin
       @session = OgiPilotSession.find_by topic: "BaseLineRisk"
+      #An equipment at risk is published.
+      #TBD
+      #This is supposed to be done externally, where SyncStatus messages will be published.
+      @update_equipment = Equipment.find_by(uuid:"9c6dd4d2-7cc4-4207-9d61-b7ec3f69d176")
+      @update_equipment.status_id = LifeCycleStatusHelper::DANGER
+      @update_equipment.alarm_id = AlarmHelper::ABNORMAL
       if @session.provider_session_id.present?
         publish_client = IsbmRestAdaptor::ProviderPublication.new
-        #In the future, this is where the BOD that contains Risk Data should be published.
-        posted_message_id = publish_client.post_publication(@session.provider_session_id, 'Test content Part 2', [@session.topic])
+        #In the future, for the DEMO this is where the BOD that contains Risk Data should be published.
+        posted_message_id = publish_client.post_publication(@session.provider_session_id, @update_equipment, [@session.topic])
         puts "Posted message: #{posted_message_id}"
 
-        $break_down_structure_notification = $break_down_structure_notification + 1
-        redirect_to risk_dashboards_path, notice: 'Triggering Risk Info BreakDown'
+        #This should be updated when the Job receives a message and has not read it yet.
+        #TBD
+        $break_down_structure_notification += 1
+        $alarms_notification += 1
+        $measurements_notification += 1
+        redirect_to risk_dashboards_path
       else
         redirect_to risk_dashboards_path, alert: 'Please open a valid session!'
       end

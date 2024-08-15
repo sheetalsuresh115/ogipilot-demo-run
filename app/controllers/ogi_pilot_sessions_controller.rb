@@ -8,6 +8,7 @@ class OgiPilotSessionsController < ApplicationController
 
   def new
     @session = OgiPilotSession.new
+    logger.debug "NEW session initialized: #{@session.inspect}"
   end
 
   def create

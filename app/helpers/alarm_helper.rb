@@ -1,0 +1,7 @@
+module AlarmHelper
+  NORMAL = 0
+  FLUCTUATING = 1
+  ABNORMAL_FREQUENCIES = 2
+  ABNORMAL = 3
+  RECORDED = 4
+end

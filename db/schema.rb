@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_24_043829) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_12_073039) do
   create_table "equipment", force: :cascade do |t|
     t.string "uuid"
     t.string "id_in_source"
@@ -26,6 +26,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_24_043829) do
     t.string "bod_content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "status_id"
+    t.string "alarm_id"
+  end
+
+  create_table "measurements", force: :cascade do |t|
+    t.integer "equipment_id", null: false
+    t.string "time_stamp"
+    t.string "data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["equipment_id"], name: "index_measurements_on_equipment_id"
   end
 
   create_table "ogi_pilot_sessions", force: :cascade do |t|
@@ -39,4 +50,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_24_043829) do
     t.string "provider_session_id"
   end
 
+  add_foreign_key "measurements", "equipment"
 end
