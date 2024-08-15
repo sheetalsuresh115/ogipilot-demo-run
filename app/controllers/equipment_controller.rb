@@ -113,7 +113,6 @@ class EquipmentController < ApplicationController
         $measurements_notification -= 1
       end
 
-      debugger
       if @messages
         @messages.each do |message|
           #TBD - Logic to read data from a syncBod and create the bodObject
