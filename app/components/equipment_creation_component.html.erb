@@ -1,0 +1,83 @@
+<% if @equipment.uuid.present? %>
+    <h3>Edit Equipment</h3>
+<% else %>
+    <h3>New Equipment</h3>
+<% end %>
+<div class ="card">
+    <div class="card-body">
+        <%= form_with model: @equipment do |form| %>
+            <div class="mb-3 ">
+                <%= form.label :uuid, 'UUID:' %>
+                <%= form.text_field(:uuid, placeholder: 'UUID') %>
+                <% @equipment.errors.full_messages_for(:uuid).each do |message| %>
+                    <div class="text-danger"><%= message %></div>
+                <% end %>
+            </div>
+            <div class="mb-3">
+                <%= form.label :id_in_source, 'Id In Source:'  %>
+                <%= form.text_field(:id_in_source, placeholder: 'Id In Source') %>
+                <% @equipment.errors.full_messages_for(:id_in_source).each do |message| %>
+                    <div class="text-danger"><%= message %></div>
+                <% end %>
+            </div>
+            <div class="mb-3">
+                <%= form.label :short_name, 'Short Name:' %>
+                <%= form.text_field(:short_name, placeholder: 'Short Name') %>
+                <% @equipment.errors.full_messages_for(:short_name).each do |message| %>
+                    <div class="text-danger"><%= message %></div>
+                <% end %>
+            </div>
+            <div class="mb-3">
+                <%= form.label :functional_location_id, 'Functional Location:' %>
+                <%= form.text_field(:functional_location_id, placeholder: 'Functional Location') %>
+                <% @equipment.errors.full_messages_for(:functional_location_id).each do |message| %>
+                    <div class="text-danger"><%= message %></div>
+                <% end %>
+            </div>
+            <div class="mb-3 ">
+                <%= form.label :segment_uuid, 'Segment UUID:' %>
+                <%= form.text_field(:segment_uuid, placeholder: 'Segment UUID') %>
+                <% @equipment.errors.full_messages_for(:segment_uuid).each do |message| %>
+                    <div class="text-danger"><%= message %></div>
+                <% end %>
+            </div>
+            <div class="mb-3">
+                <%= form.label :site_id, 'Site Id:'  %>
+                <%= form.text_field(:site_id, placeholder: 'Site Id') %>
+                <% @equipment.errors.full_messages_for(:site_id).each do |message| %>
+                    <div class="text-danger"><%= message %></div>
+                <% end %>
+            </div>
+            <div class="mb-3">
+                <%= form.label :properties, 'Properties:' %>
+                <%= form.text_field(:properties, placeholder: 'Properties') %>
+                <% @equipment.errors.full_messages_for(:properties).each do |message| %>
+                    <div class="text-danger"><%= message %></div>
+                <% end %>
+            </div>
+            <div class="mb-3">
+                <%= form.label :status_id, 'Status:' %>
+                <%= form.text_field(:status_id, placeholder: 'Status') %>
+                <% @equipment.errors.full_messages_for(:status_id).each do |message| %>
+                    <div class="text-danger"><%= message %></div>
+                <% end %>
+            </div>
+            <div class="mb-3">
+                <%= form.label :alarm_id, 'Alarm Status:' %>
+                <%= form.text_field(:alarm_id, placeholder: 'Alarm Status') %>
+                <% @equipment.errors.full_messages_for(:alarm_id).each do |message| %>
+                    <div class="text-danger"><%= message %></div>
+                <% end %>
+            </div>
+            <%= hidden_field_tag :source, @source %>
+            <div class="text-center">
+                <%= link_to "Back", :back %>
+                <% if @equipment.uuid.present? %>
+                    <%= form.submit 'Update equipment', class:"btn formsubmitbtn" %>
+                <% else %>
+                    <%= form.submit 'Create equipment', class:"btn formsubmitbtn" %>
+                <% end %>
+            </div>
+        <% end %>
+    </div>
+</div>
