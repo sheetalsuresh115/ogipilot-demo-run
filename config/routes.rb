@@ -1,7 +1,6 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
-
   root 'risk_dashboards#index'
 
   controller :risk_dashboards do
