@@ -1,7 +1,8 @@
-// Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
-import "@hotwired/turbo-rails"
-import "controllers"
-import * as bootstrap from "bootstrap"
+// // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
+import "bootstrap"
+import "popper"
+import "jquery-slim-min"
+import "chart"
 
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.nav-link').forEach(navLink => {
@@ -19,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(response => response.text())
       .then(html => {
         document.getElementById('tab-content').innerHTML = html;
-      })
+      }) 
       .catch(error => console.error('Error loading component:', error));
   }
 });
