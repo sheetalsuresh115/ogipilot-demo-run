@@ -52,6 +52,9 @@ gem "config"
 #RDBG debug
 # gem "debug", require: false
 
+gem "bootstrap"
+gem "sassc-rails"
+
 gem "ruby-lsp"
 gem "rubocop"
 
