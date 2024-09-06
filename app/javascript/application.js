@@ -2,8 +2,7 @@
 import "bootstrap"
 import "popper"
 import "jquery-slim-min"
-import "chart"
-
+import "controllers"
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.nav-link').forEach(navLink => {
     navLink.addEventListener('click', function(event) {
