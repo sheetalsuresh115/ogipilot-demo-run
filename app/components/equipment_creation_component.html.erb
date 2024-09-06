@@ -69,6 +69,13 @@
                     <div class="text-danger"><%= message %></div>
                 <% end %>
             </div>
+            <div class="mb-3">
+                <%= form.label :is_active, 'Active:' %>
+                <%= form.check_box(:is_active) %>
+                <% @equipment.errors.full_messages_for(:alarm_id).each do |message| %>
+                    <div class="text-danger"><%= message %></div>
+                <% end %>
+            </div>
             <%= hidden_field_tag :source, @source %>
             <div class="text-center">
                 <%= link_to "Back", :back %>

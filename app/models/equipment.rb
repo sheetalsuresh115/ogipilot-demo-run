@@ -6,4 +6,5 @@ class Equipment < ApplicationRecord
   validates :segment_uuid, presence: true
   validates :status_id, presence: true
   validates :alarm_id, presence: true
+  validates :is_active, presence: true
 end

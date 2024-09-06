@@ -7,6 +7,7 @@ class RiskDashboardsController < ApplicationController
   $standby_components_notification = 0
 
   def index
+    # LoadMeasurementsJob.perform_later
   end
 
   def show
@@ -14,17 +15,37 @@ class RiskDashboardsController < ApplicationController
   end
 
   def load_measurements_component
-    # Assuming that once the SyncMeasurement gets deserialized into an object,
-    # we could fetch the timestamp and measurement data from it.
+    # Using ActionCables, data will be live streamed.
 
-    #TBD - websocket + live data
     timestamp_labels = []
+    datasets = []
     10.times do |i|
       timestamp_labels << (Time.current + i.minutes).strftime("%H:%M:%p")
+      #Considering there will be only 1 active motor.
+      #this data has to come externally.
+      @active_equipment = Equipment.find_by(is_active:"1")
+      if @active_equipment.present?
+        @measurement = Measurement.new( time_stamp: (Time.current + i.minutes + i ).strftime("%H:%M:%p"),
+          data: rand(20), equipment: @active_equipment)
+
+        # # MeasurementChannel.broadcast_to("measurement_channel", id: @measurement.id, timestamp: @measurement.time_stamp,
+        # #   data: @measurement.data,
+        # #   equipment: @measurement.equipment)
+        # debugger
+        # ActionCable.server.broadcast("measurement_channel", {
+        #   id: @measurement.id,
+        #   timestamp: @measurement.time_stamp,
+        #   data: @measurement.data,
+        #   equipment: @measurement.equipment
+        # })
+
+        datasets << @measurement.data
+      end
+
     end
 
     @labels = timestamp_labels
-    @datasets = [12, 19, 3, 5, 2, 12, 4, 8, 2, 20]
+    @datasets = datasets
   end
 
   def load_alarms_component

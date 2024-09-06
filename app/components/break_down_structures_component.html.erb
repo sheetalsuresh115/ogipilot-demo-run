@@ -1,7 +1,7 @@
 <h1><%= @source %></h1>
 <div class="d-flex justify-content-between">
   <div class="text-start">
-    <%= button_to "Check for Risks", check_for_risk_path(source: @source), method: 'get', class: "btn btn-secondary my-2" %>
+    <%= link_to "Check for Risks", check_for_risk_path(source: @source), method: :get, class: "btn btn-secondary my-2" %>
   </div>
   <div class="text-end">
     <%= link_to new_equipment_path(source: @source), method: :get, class: "btn" do%>
@@ -27,7 +27,7 @@
                     <th scope="col">UUID</th>
                     <th scope="col">Id In Source</th>
                     <th scope="col">Short Name</th>
-                    <th scope="col">Functional Location</th>
+                    <th scope="col">Is Active</th>
                     <% if @source == "BreakDownStructures" %>
                       <th scope="col">Status</th>
                     <% elsif @source == "Alarms" %>
@@ -42,43 +42,49 @@
                       <td><%= equipment.uuid %> </td>
                       <td><%= equipment.id_in_source %></td>
                       <td><%= equipment.short_name %></td>
-                      <td><%= equipment.functional_location_id %></td>
+                      <td>
+                          <% if equipment.is_active %>
+                            <%= "Yes" %>
+                          <% else %>
+                            <%= "No" %>
+                          <% end %>
+                      </td>
                       <% if @source == "BreakDownStructures" %>
                         <td>
                           <% if equipment.status_id.to_i == LifeCycleStatusHelper::NORMAL %>
-                              <% @status_type = "alert-success" %>
-                              <% @status = "NORMAL" %>
+                            <% @status_type = "alert-success" %>
+                            <% @status = "NORMAL" %>
                           <% elsif equipment.status_id.to_i == LifeCycleStatusHelper::WARNING %>
-                              <% @status_type = "alert-warning" %>
-                              <% @status = "WARNING" %>
+                            <% @status_type = "alert-warning" %>
+                            <% @status = "WARNING" %>
                           <% elsif equipment.status_id.to_i == LifeCycleStatusHelper::ALERT %>
-                              <% @status_type = "alert-info" %>
-                              <% @status = "ALERT" %>
+                            <% @status_type = "alert-info" %>
+                            <% @status = "ALERT" %>
                           <% elsif equipment.status_id.to_i == LifeCycleStatusHelper::DANGER %>
-                              <% @status_type = "alert-danger" %>
-                              <% @status = "DANGER" %>
+                            <% @status_type = "alert-danger" %>
+                            <% @status = "DANGER" %>
                           <% elsif  equipment.status_id.to_i == LifeCycleStatusHelper::UNDETERMINED %>
-                              <% @status_type = "alert-secondary" %>
-                              <% @status = "UNDETERMINED" %>
+                            <% @status_type = "alert-secondary" %>
+                            <% @status = "UNDETERMINED" %>
                           <% end %>
                           
                       <% elsif @source == "Alarms" %>
                         <td>
                           <% if equipment.alarm_id.to_i == AlarmHelper::NORMAL %>
-                              <% @status_type = "alert-success" %>
-                              <% @status = "NORMAL" %>
+                            <% @status_type = "alert-success" %>
+                            <% @status = "NORMAL" %>
                           <% elsif equipment.alarm_id.to_i == AlarmHelper::FLUCTUATING %>
-                              <% @status_type = "alert-warning" %>
-                              <% @status = "FLUCTUATING" %>
+                            <% @status_type = "alert-warning" %>
+                            <% @status = "FLUCTUATING" %>
                           <% elsif equipment.alarm_id.to_i == AlarmHelper::ABNORMAL_FREQUENCIES %>
-                              <% @status_type = "alert-info" %>
-                              <% @status = "ABNORMAL_FREQUENCIES" %>
+                            <% @status_type = "alert-info" %>
+                            <% @status = "ABNORMAL_FREQUENCIES" %>
                           <% elsif equipment.alarm_id.to_i == AlarmHelper::ABNORMAL %>
-                              <% @status_type = "alert-danger" %>
-                              <% @status = "ABNORMAL" %>
+                            <% @status_type = "alert-danger" %>
+                            <% @status = "ABNORMAL" %>
                           <% elsif  equipment.alarm_id.to_i == AlarmHelper::RECORDED %>
-                              <% @status_type = "alert-secondary" %>
-                              <% @status = "RECORDED" %>
+                            <% @status_type = "alert-secondary" %>
+                            <% @status = "RECORDED" %>
                           <% end %>
                       <% end %>
                         <div class="alert <%= @status_type %> align-items-center" role="alert">
