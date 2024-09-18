@@ -1,4 +1,5 @@
 require 'sidekiq/web'
+require 'sidekiq-scheduler/web'
 
 Rails.application.routes.draw do
   root 'risk_dashboards#index'
@@ -21,10 +22,11 @@ Rails.application.routes.draw do
   resources :risk_dashboards, :ogi_pilot_sessions, :equipment
   get 'check_for_risk', to: 'equipment#check_for_risk'
 
+  resources :measurements, only: [:create]
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
   mount Sidekiq::Web => '/sidekiq'
-
+  mount ActionCable.server => '/cable'
 end

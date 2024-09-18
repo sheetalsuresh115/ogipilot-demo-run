@@ -3,6 +3,8 @@ import "bootstrap"
 import "popper"
 import "jquery-slim-min"
 import "controllers"
+import "channels"
+
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.nav-link').forEach(navLink => {
     navLink.addEventListener('click', function(event) {

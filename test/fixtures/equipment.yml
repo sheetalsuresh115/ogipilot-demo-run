@@ -2,46 +2,19 @@
 
 one:
   uuid: MyString
-  string: MyString
   id_in_source: MyString
-  string: MyString
   functional_location_id: MyString
-  string: MyString
   segment_uuid: MyString
-  string: MyString
-  site_id: MyString
-  string: MyString
   short_name: MyString
-  string: MyString
-  properties: MyString
-  text: MyString
-  installed_at: MyString
-  datetime: MyString
-  uninstalled_at: MyString
-  datetime: MyString
-  category: MyString
-  string: MyString
-  bod_content: MyString
-
+  status_id: MyString
+  alarm_id: MyString
+  is_active: MyString
 two:
   uuid: MyString
-  string: MyString
   id_in_source: MyString
-  string: MyString
   functional_location_id: MyString
-  string: MyString
   segment_uuid: MyString
-  string: MyString
-  site_id: MyString
-  string: MyString
   short_name: MyString
-  string: MyString
-  properties: MyString
-  text: MyString
-  installed_at: MyString
-  datetime: MyString
-  uninstalled_at: MyString
-  datetime: MyString
-  category: MyString
-  string: MyString
-  bod_content: MyString
+  status_id: MyString
+  alarm_id: MyString
+  is_active: MyString

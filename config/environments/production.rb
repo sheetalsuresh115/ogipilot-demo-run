@@ -45,6 +45,16 @@ Rails.application.configure do
   # config.action_cable.url = "wss://example.com/cable"
   # config.action_cable.allowed_request_origins = [ "http://example.com", /http:\/\/example.*/ ]
 
+  ## THE BELOW CAN BE USED WHEN WE UPLOAD TO FENEX
+  # config.action_cable.url = "wss://yourdomain.com/cable"
+  # # Allow WebSocket connections from your production domain
+  # config.action_cable.allowed_request_origins = ['https://yourdomain.com']
+  # # Ensure you are using SSL in production with `wss://`
+  # config.force_ssl = true
+  # # Add any additional security or logging settings for ActionCable
+  # config.action_cable.log_tags = [-> request { "ActionCable: #{request.uuid}" }]
+
+
   # Assume all access to the app is happening through a SSL-terminating reverse proxy.
   # Can be used together with config.force_ssl for Strict-Transport-Security and secure cookies.
   # config.assume_ssl = true

@@ -7,7 +7,6 @@ class RiskDashboardsController < ApplicationController
   $standby_components_notification = 0
 
   def index
-    # LoadMeasurementsJob.perform_later
   end
 
   def show
@@ -16,36 +15,15 @@ class RiskDashboardsController < ApplicationController
 
   def load_measurements_component
     # Using ActionCables, data will be live streamed.
-
+    measurements = Measurement.last(10)
     timestamp_labels = []
     datasets = []
-    10.times do |i|
-      timestamp_labels << (Time.current + i.minutes).strftime("%H:%M:%p")
-      #Considering there will be only 1 active motor.
-      #this data has to come externally.
-      @active_equipment = Equipment.find_by(is_active:"1")
-      if @active_equipment.present?
-        @measurement = Measurement.new( time_stamp: (Time.current + i.minutes + i ).strftime("%H:%M:%p"),
-          data: rand(20), equipment: @active_equipment)
-
-        # # MeasurementChannel.broadcast_to("measurement_channel", id: @measurement.id, timestamp: @measurement.time_stamp,
-        # #   data: @measurement.data,
-        # #   equipment: @measurement.equipment)
-        # debugger
-        # ActionCable.server.broadcast("measurement_channel", {
-        #   id: @measurement.id,
-        #   timestamp: @measurement.time_stamp,
-        #   data: @measurement.data,
-        #   equipment: @measurement.equipment
-        # })
-
-        datasets << @measurement.data
-      end
-
+    measurements.each do |measurement_obj|
+      timestamp_labels.push(measurement_obj.time_stamp)
+      datasets.push(measurement_obj.data)
     end
-
-    @labels = timestamp_labels
-    @datasets = datasets
+    @timestamps = timestamp_labels
+    @vibrations = datasets
   end
 
   def load_alarms_component
@@ -59,6 +37,13 @@ class RiskDashboardsController < ApplicationController
   def load_standby_component
     @standby = Equipment.all
   end
+
+  # def check_for_data
+  #   #Assuming there is only 1 active Motor at a time.
+  #   equip = Equipment.where("is_active = ? ", true).first
+  #   ActionCable.server.broadcast("measurement_channel", { equipment: equip.id, time: Time.current.strftime("%H:%M"), value: Random.rand(60) })
+  #   redirect_to load_measurements_component_path
+  # end
 
   def baseline_risk
     begin

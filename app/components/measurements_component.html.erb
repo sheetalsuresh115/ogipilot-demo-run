@@ -1,27 +1,11 @@
 <div class="container">
     <div>
         <h2 class="text-center">Measurements</h2>
-        <%# Not needed, because labels would be passed in from BOD - hopefully
-            <div class="d-block d-sm-flex align-items-center justify-content-between mb-3">
-                <div class="mb-3 mb-sm-0">
-                </div>
-                <div>
-                <select class="form-select text-secondary border-light-subtle">
-                    <option value="1"> Units/Time </option>
-                    <option value="2"> Hz/Time</option>
-                    <option value="3"> ? </option>
-                </select>
-                </div>
-        </div> %>
-        <%# <div id="bsb-chart-1">
-            <canvas id="vibrationsChart" width="960" height="200"></canvas>
-        </div> %>
+        <div id="timestamps-data" data-timestamps="<%= @timestamps %>"></div>
+        <div id="vibrations-data" data-vibrations="<%= @vibrations %>"></div>
+
         <div data-controller="measurements-controller">
             <canvas id="vibrationsChart" width="800" height="450"></canvas>
         </div>
     </div>
 </div>
-
-<%# <script>
-var ctx = document.getElementById('vibrationsChart');
-</script> %>

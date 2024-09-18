@@ -30,7 +30,7 @@ gem "cssbundling-rails"
 gem "jbuilder"
 
 # Use Redis adapter to run Action Cable in production
-# gem "redis", ">= 4.0.1"
+gem "redis", ">= 4.0.1"
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
@@ -49,6 +49,7 @@ gem "bootsnap", require: false
 gem "view_component"
 gem "typhoeus"
 gem "config"
+
 #RDBG debug
 # gem "debug", require: false
 
@@ -95,3 +96,5 @@ group :test do
 end
 
 gem "sidekiq", "~> 7.3"
+gem "sidekiq-scheduler"
+gem "rufus-scheduler"
