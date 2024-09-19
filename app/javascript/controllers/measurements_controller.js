@@ -16,10 +16,13 @@ function measurementSetup() {
   let vibrations = JSON.parse(document.getElementById('vibrations-data') ? document.getElementById('vibrations-data').getAttribute('data-vibrations') : null)
   let chart
   let dataPoints = [];
-  vibrations.forEach((number, index) => {
-    dataPoints.push({ x: timestamps[index], y:vibrations[index] })
-  });
+  
   document.addEventListener('DOMContentLoaded', () => {
+    if (vibrations) {
+      vibrations.forEach((number, index) => {
+      dataPoints.push({ x: timestamps[index], y:vibrations[index] })
+      });
+    }
     var ctx = document.getElementById('vibrationsChart');
     if (ctx) {
       const data = {
@@ -65,11 +68,13 @@ function measurementSetup() {
 
 
     document.addEventListener("measurementReceived", function (event) {
-      chart.data.datasets.forEach((dataset) => {
-        if (dataset.data.length >= 10) dataset.data.shift();
-        dataset.data.push(JSON.parse(event.detail.value));
-      });
-      chart.update();
+      if (chart) {
+        chart.data.datasets.forEach((dataset) => {
+          if (dataset.data.length >= 10) dataset.data.shift();
+          dataset.data.push(JSON.parse(event.detail.value));
+        });
+        chart.update();
+      }
     });
   });
 }
