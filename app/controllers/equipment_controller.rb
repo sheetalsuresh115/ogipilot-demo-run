@@ -3,10 +3,15 @@ require 'isbm2_adaptor_rest'
 require 'isbm_adaptor_common'
 
 class EquipmentController < ApplicationController
+  before_action :validate_source
 
   def new
+    # Alarms and Break Down Structures displays the same list of equipments.
+    # Hence, source here indicates the origin of this request.
+    # After the object gets saved, it gets redirected to its source based on this parameter.
     @equipment = Equipment.new
     @source = params[:source]
+    render(EquipmentCreationComponent.new(equipment: @equipment, source: @source))
   end
 
   def create
@@ -14,30 +19,27 @@ class EquipmentController < ApplicationController
     if @equipment.save
       redirect_to_source
     else
-      render :new, status: :unprocessable_entity
+      render turbo_stream: turbo_stream.replace(
+        'equipment_form',
+        renderable: EquipmentCreationComponent.new(equipment: @equipment, source: params[:source])
+      ), status: :unprocessable_entity
     end
   end
 
   def index
-    Typhoeus::Config.verbose = true
-    IsbmRestAdaptor.configure do |conf|
-      conf.host = 'isbm.lab.oiiecosystem.net'
-      conf.scheme = 'https'
-      conf.base_path = '/rest'
-      # conf.debugging = true
-      conf.ssl_ca_cert = "C:/Program Files/curl/curl-ca-bundle.crt"
-    end
-    @source = params[:source] || "BreakDownStructures"
+    # All assets are grouped by functional location.
     @equipments = Equipment.all.group_by(&:functional_location_id)
-    rescue IsbmAdaptor::IsbmFault => e
-      fault_message = extract_fault_message(e.response_body) if e.response_body.present?
-      return check_session_fault_message_not_found(fault_message) if e.code == 404
-      handle_session_access_api_error(e.code, fault_message)
+    @source_dict = {
+      source: params[:source] || "BreakDownStructures",
+      status: params[:source] == "BreakDownStructures" ? "Status" : "Alarm Status",
+      title: params[:source] == "BreakDownStructures" ? "Break Down Structures" : "Alarms"
+    }
   end
 
   def edit
     @equipment = Equipment.find(params[:id])
     @source = params[:source]
+    render(EquipmentCreationComponent.new(equipment: @equipment, source: @source))
   end
 
   def update
@@ -46,14 +48,21 @@ class EquipmentController < ApplicationController
     if @equipment.update(equipment_params)
       redirect_to_source
     else
-      render :edit, status: :unprocessable_entity
+      render turbo_stream: turbo_stream.replace(
+        'equipment_form',
+        renderable: EquipmentCreationComponent.new(equipment: @equipment, source: params[:source])
+      ), status: :unprocessable_entity
     end
   end
 
   def destroy
     @equipment = Equipment.find(params[:id])
-    @equipment.destroy
 
+    if @equipment.destroy
+      flash[:notice] = "Equipment was successfully deleted."
+    else
+      flash[:alert] = "Failed to delete the equipment. There might be dependencies preventing the deletion."
+    end
     redirect_to_source
   end
 
@@ -65,68 +74,34 @@ class EquipmentController < ApplicationController
     end
   end
 
-  # def computeStatus(equipments)
-  #   # @equipment = Equipment.find(params[:id])
-  #   equipments.each_with_index do |(floc, records), index|
-  #     records.each do |equipment|
-  #       if equipment.status_id == LifeCycleStatusHelper.NORMAL
-  #         @status_type = "alert-success"
-  #         @status = "NORMAL"
-  #       elsif equipment.status_id == LifeCycleStatusHelper.WARNING
-  #         @status_type = "alert-warning"
-  #         @status = "WARNING"
-  #       elsif equipment.status_id == LifeCycleStatusHelper.ALERT
-  #         @status_type = "alert-info"
-  #         @status = "ALERT"
-  #       elsif equipment.status_id == LifeCycleStatusHelper.DANGER
-  #         @status_type = "alert-danger"
-  #         @status = "DANGER"
-  #       elsif equipment.status_id == LifeCycleStatusHelper.UNDETERMINED
-  #         @status_type = "alert-secondary"
-  #         @status = "UNDETERMINED"
-  #       end
-  #     end
-  #   end
-
-  #   equipments.map do |equipment|
-  #     {
-  #       equipment: equipment,
-  #       status_type: @status_type,
-  #       status: @status
-  #     }
-  #   end
-
-  #   redirect_to equipment_index_path, notice: 'Equipment was successfully deleted.'
-  # end
-
   def check_for_risk
-    @messages = Array.new()
-    @session = OgiPilotSession.find_by topic: "BaseLineRisk"
-    if @session.consumer_session_id.present?
-      subscribe_client = IsbmRestAdaptor::ConsumerPublication.new
-      while message = subscribe_client.read_publication(@session.consumer_session_id) do
-        @messages.push(message)
-        subscribe_client.remove_publication(@session.consumer_session_id)
-        puts "Read message #{message.id} from topics #{message.topics} of type #{message.media_type}:\n#{message.content}"
-        $break_down_structure_notification -= 1
-        $alarms_notification -= 1
-        $measurements_notification -= 1
-      end
+    # messages = Array.new()
+    session = OgiPilotSession.find_by topic: "BaseLineRisk"
+    # messages = @session.read_messages()
 
-      if @messages
-        @messages.each do |message|
-          #TBD - Logic to read data from a syncBod and create the bodObject
-
-          @update_equipment = Equipment.find_by(uuid: message.content[:uuid])
-          if @update_equipment
-            @update_equipment.status_id = message.content[:status_id]
-            @update_equipment.alarm_id = message.content[:alarm_id]
-            @update_equipment.save
-          end
+    if session.consumer_session_exists
+      session.read_messages().each do |message|
+        #TBD - Logic to read data from a syncBod and create the bodObject
+        update_equipment = Equipment.find_by(uuid: message.content[:uuid])
+        if update_equipment.present?
+          update_equipment.status_id = message.content[:status_id]
+          update_equipment.alarm_id = message.content[:alarm_id]
+          update_equipment.save
         end
       end
+    else
+      flash[:alert] = "Session does not exist. Please open a valid session."
     end
     redirect_to_source
+  end
+
+  def validate_source
+    valid_sources = ["BreakDownStructures", "Alarms"]
+
+    unless valid_sources.include?(params[:source])
+      flash[:alert] = "Invalid source provided"
+      redirect_to root_path
+    end
   end
 
   private

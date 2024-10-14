@@ -13,42 +13,23 @@
     <div class="container">
       <div class="row">
         <div class="col">
-          <div data-controller="measurements">
-            <%# <canvas id="vibrationsChart" width="800" height="450"></canvas> %>
-          </div>
           <header>
-            <div class="navbar navbar-dark bg-dark box-shadow">
-              <div class="container d-flex justify-content-between">
-                <a href="/" class="navbar-brand d-flex align-items-center">
-                  <strong >Risk Demonstration DashBoard</strong>
-                </a>
-                <div class="dropdown">
-                  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <span class="navbar-toggler-icon"></span>
-                  </button>
-                  <ul class="dropdown-menu">
-                    <li><%= button_to "Session Management", ogi_pilot_sessions_path, method: 'get', class: "btn" %></li>
-                    <li><%= button_to "Job Management", sidekiq_web_path, method: 'get', class: "btn" %></li>
-                  </ul>
-                
-                  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <span>Events</span>
-                  </button>
-                  <ul class="dropdown-menu">
-                    <li><%= button_to "Baseline Risk Info", baseline_risk_path, method: 'get', class: "btn" %></li>
-                    <li><%= button_to "Failure Event", load_alarms_component_path, method: 'get', class: "btn" %></li>
-                    <li><%= button_to "M1 Active Failed", load_alarms_component_path, method: 'get', class: "btn" %></li>
-                    <li><%= button_to "M2 StandBy Active", load_alarms_component_path, method: 'get', class: "btn" %></li>
-                    <li><%= button_to "M2 Risk Info Update", load_alarms_component_path, method: 'get', class: "btn" %></li>
-                    <li><%= button_to "New Motor Installed", load_alarms_component_path, method: 'get', class: "btn" %></li>
-                    <li><%= button_to "Updated Operation Risk Info", load_alarms_component_path, method: 'get', class: "btn" %></li>
-                    <li><%= button_to "Updated Risk Info", load_alarms_component_path, method: 'get', class: "btn" %></li>
-                    <li><%= button_to "Updated Last Risk Info", load_alarms_component_path, method: 'get', class: "btn" %></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+            <%= render NavComponent.new() %>
           </header>
+          <div>
+            <% if flash %>
+              <% if flash[:notice] %>
+                <div class="alert alert-success">
+                  <%= flash[:notice] %>
+                </div>
+              <% end %>
+              <% if flash[:alert] %>
+                <div class="alert alert-danger">
+                  <%= flash[:alert] %>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
           <%= yield %>
         </div>
       </div>

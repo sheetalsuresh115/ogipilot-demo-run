@@ -5,10 +5,8 @@ Rails.application.routes.draw do
   root 'risk_dashboards#index'
 
   controller :risk_dashboards do
-    get 'load_measurements_component', action: :load_measurements_component, as: :load_measurements_component
-    # load_alarms_component_path - Just a placeholder - will remove it once the other trigger events are implemented
-    get 'load_alarms_component_path', action: :load_alarms_component, as: :load_alarms_component
-    get 'load_active_component_path', action: :load_active_component, as: :load_active_component
+    get 'measurements', action: :measurements, as: :measurements
+    get 'active_standby', action: :active_standby, as: :active_standby
     get 'publish_subscribe', action: :publish_subscribe, as: :publish_subscribe
     get 'baseline_risk', action: :baseline_risk, as: :baseline_risk
   end
@@ -18,8 +16,8 @@ Rails.application.routes.draw do
     get 'close', on: :member
   end
 
-  #equipment is plural and hence equipment_index_path is the index path for equipment.
-  resources :risk_dashboards, :ogi_pilot_sessions, :equipment
+  # equipment is plural and hence equipment_index_path is the index path for equipment.
+  resources :ogi_pilot_sessions, :equipment
   get 'check_for_risk', to: 'equipment#check_for_risk'
 
   resources :measurements, only: [:create]

@@ -6,14 +6,7 @@ class RiskDashboardsController < ApplicationController
   $active_components_notification = 0
   $standby_components_notification = 0
 
-  def index
-  end
-
-  def show
-    @equipments = Equipment.all
-  end
-
-  def load_measurements_component
+  def measurements
     # Using ActionCables, data will be live streamed.
     measurements = Measurement.last(10)
     timestamp_labels = []
@@ -26,48 +19,19 @@ class RiskDashboardsController < ApplicationController
     @vibrations = datasets
   end
 
-  def load_alarms_component
-    @alarms = Equipment.all
+  def active_standby
+    @equipments = Equipment.all
   end
-
-  def load_active_component
-    @active = Equipment.all
-  end
-
-  def load_standby_component
-    @standby = Equipment.all
-  end
-
-  # def check_for_data
-  #   #Assuming there is only 1 active Motor at a time.
-  #   equip = Equipment.where("is_active = ? ", true).first
-  #   ActionCable.server.broadcast("measurement_channel", { equipment: equip.id, time: Time.current.strftime("%H:%M"), value: Random.rand(60) })
-  #   redirect_to load_measurements_component_path
-  # end
 
   def baseline_risk
     begin
-      @session = OgiPilotSession.find_by topic: "BaseLineRisk"
-      #An equipment at risk is published.
-      #TBD
-      #This is supposed to be done externally, where SyncStatus messages will be published.
-      @update_equipment = Equipment.find_by(uuid:"9c6dd4d2-7cc4-4207-9d61-b7ec3f69d176")
-      @update_equipment.status_id = LifeCycleStatusHelper::DANGER
-      @update_equipment.alarm_id = AlarmHelper::ABNORMAL
-      if @session.provider_session_id.present?
-        publish_client = IsbmRestAdaptor::ProviderPublication.new
-        #In the future, for the DEMO this is where the BOD that contains Risk Data should be published.
-        posted_message_id = publish_client.post_publication(@session.provider_session_id, @update_equipment, [@session.topic])
-        puts "Posted message: #{posted_message_id}"
-
-        #This should be updated when the Job receives a message and has not read it yet.
-        #TBD
-        $break_down_structure_notification += 1
-        $alarms_notification += 1
-        $measurements_notification += 1
-        redirect_to risk_dashboards_path
+      session = OgiPilotSession.find_by topic: "BaseLineRisk"
+      if session && session.provider_session_exists
+        session.post_messages
+        redirect_back(fallback_location: root_path)
       else
-        redirect_to risk_dashboards_path, alert: 'Please open a valid session!'
+        flash[:alert] = "Please open a valid session!"
+        redirect_back(fallback_location: root_path)
       end
 
     rescue IsbmAdaptor::IsbmFault => e

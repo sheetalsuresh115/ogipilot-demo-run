@@ -1,135 +1,87 @@
-<h1><%= @source %></h1>
-<div class="d-flex justify-content-between">
-  <div class="text-start">
-    <%= link_to "Check for Risks", check_for_risk_path(source: @source), method: :get, class: "btn btn-secondary my-2" %>
-  </div>
-  <div class="text-end">
-    <%= link_to new_equipment_path(source: @source), method: :get, class: "btn" do%>
-      <h1><i class="bi bi-building-fill-add"></i></h1>
-    <% end %>
-  </div>
-</div>
-<div class="equipments">
-  <% if @equipments.present? %>
-  <div class="accordion" id="Grouping">
-    <% @equipments.each_with_index do |(floc, records), index| %>
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="flush-<%=floc%>">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-<%=index%>" aria-expanded="false" aria-controls="flush-<%=floc%>">
-            <%= floc %>
-          </button>
-        </h2>
-        <div id="flush-<%=index%>" class="accordion-collapse collapse" aria-labelledby="flush-<%=floc%>" data-bs-parent="#accordionFlushExample">
-          <div class="accordion-body">
-            <table class="table table-striped table-hover">
-                <thead>
-                  <tr>
-                    <th scope="col">UUID</th>
-                    <th scope="col">Id In Source</th>
-                    <th scope="col">Short Name</th>
-                    <th scope="col">Is Active</th>
-                    <% if @source == "BreakDownStructures" %>
-                      <th scope="col">Status</th>
-                    <% elsif @source == "Alarms" %>
-                      <th scope="col">Alarm Status</th>
-                    <% end %>
-                    <th scope="col">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% records.each do |equipment| %>
-                    <tr> 
-                      <td><%= equipment.uuid %> </td>
-                      <td><%= equipment.id_in_source %></td>
-                      <td><%= equipment.short_name %></td>
-                      <td>
-                          <% if equipment.is_active %>
-                            <%= "Yes" %>
-                          <% else %>
-                            <%= "No" %>
-                          <% end %>
-                      </td>
-                      <% if @source == "BreakDownStructures" %>
-                        <td>
-                          <% if equipment.status_id.to_i == LifeCycleStatusHelper::NORMAL %>
-                            <% @status_type = "alert-success" %>
-                            <% @status = "NORMAL" %>
-                          <% elsif equipment.status_id.to_i == LifeCycleStatusHelper::WARNING %>
-                            <% @status_type = "alert-warning" %>
-                            <% @status = "WARNING" %>
-                          <% elsif equipment.status_id.to_i == LifeCycleStatusHelper::ALERT %>
-                            <% @status_type = "alert-info" %>
-                            <% @status = "ALERT" %>
-                          <% elsif equipment.status_id.to_i == LifeCycleStatusHelper::DANGER %>
-                            <% @status_type = "alert-danger" %>
-                            <% @status = "DANGER" %>
-                          <% elsif  equipment.status_id.to_i == LifeCycleStatusHelper::UNDETERMINED %>
-                            <% @status_type = "alert-secondary" %>
-                            <% @status = "UNDETERMINED" %>
-                          <% end %>
-                          
-                      <% elsif @source == "Alarms" %>
-                        <td>
-                          <% if equipment.alarm_id.to_i == AlarmHelper::NORMAL %>
-                            <% @status_type = "alert-success" %>
-                            <% @status = "NORMAL" %>
-                          <% elsif equipment.alarm_id.to_i == AlarmHelper::FLUCTUATING %>
-                            <% @status_type = "alert-warning" %>
-                            <% @status = "FLUCTUATING" %>
-                          <% elsif equipment.alarm_id.to_i == AlarmHelper::ABNORMAL_FREQUENCIES %>
-                            <% @status_type = "alert-info" %>
-                            <% @status = "ABNORMAL_FREQUENCIES" %>
-                          <% elsif equipment.alarm_id.to_i == AlarmHelper::ABNORMAL %>
-                            <% @status_type = "alert-danger" %>
-                            <% @status = "ABNORMAL" %>
-                          <% elsif  equipment.alarm_id.to_i == AlarmHelper::RECORDED %>
-                            <% @status_type = "alert-secondary" %>
-                            <% @status = "RECORDED" %>
-                          <% end %>
-                      <% end %>
-                        <div class="alert <%= @status_type %> align-items-center" role="alert">
-                          <div>
-                            <%= @status %>
-                          </div>
-                        </div>
-                      </td>
-                      <td> 
-                        <%= link_to edit_equipment_path(equipment, source: @source) do %>
-                          <i class="bi bi-pencil"></i>
-                        <% end %>
-                        <%= link_to equipment_path(equipment, source: @source), data: { turbo_method: :delete, 
-                          turbo_confirm: "Are you sure?" } do %>
-                          <i class="bi bi-trash"></i>
-                        <% end %>
-                      </td>
-                    </tr>
-                  <% end %>
-                  
-                  <%# <%= @messages.id %>
-                  <%# <%= @messages.media_type %>
-                  <%# <%= @messages.content %>
+<turbo-frame id="equipment_form" >
 
-                  <%# <% @messages.each do |read_message| %>
-                  <%#  <%= read_message.message_id %>
-                  <%#  <%= read_message.message_type %>
-                  <%#  <%= read_message.message_content %>
-                  <%# <% end %>
-                  <div class="container">
-                    <% flash.each do |key, message| %>
-                      <div class="alert alert-<%= key %>">
-                        <%= message %>
-                      </div>
+  <h1><%= @source_dict[:title] %></h1>
+  <div class="d-flex justify-content-between">
+    <div class="text-start">
+      <%= link_to "Check for Risks", check_for_risk_path(source: @source_dict[:source]), method: :get, class: "btn btn-secondary my-2" %>
+    </div>
+    <div class="text-end">
+      <%= link_to new_equipment_path(source: @source_dict[:source]), method: :get, class: "btn" do%>
+        <h1><i class="bi bi-building-fill-add"></i></h1>
+      <% end %>
+    </div>
+  </div>
+  <div class="equipments">
+    <% if @equipments.present? %>
+    <div class="accordion" id="Grouping">
+      <% @equipments.each_with_index do |(floc, records), index| %>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="flush-<%=floc%>">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-<%=index%>" aria-expanded="false" aria-controls="flush-<%=floc%>">
+              <%= floc %>
+            </button>
+          </h2>
+          <div id="flush-<%=index%>" class="accordion-collapse collapse" aria-labelledby="flush-<%=floc%>" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body">
+              <table class="table table-striped table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">UUID</th>
+                      <th scope="col">Id In Source</th>
+                      <th scope="col">Short Name</th>
+                      <th scope="col">Is Active</th>
+                      <th scope="col"><%= @source_dict[:status] %></th>
+                      <th scope="col">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% records.each do |equipment| %>
+                      <tr> 
+                        <td><%= equipment.uuid %> </td>
+                        <td><%= equipment.id_in_source %></td>
+                        <td><%= equipment.short_name %></td>
+                        <td>
+                            <% if equipment.is_active %>
+                              <%= "Yes" %>
+                            <% else %>
+                              <%= "No" %>
+                            <% end %>
+                        </td>
+                        <% if @source_dict[:source] == "BreakDownStructures" %>
+                          <td>
+                            <% status_type, status = LifeCycleStatusHelper.get_status_type_and_description(equipment.status_id) %>
+                        <% elsif @source_dict[:source] == "Alarms" %>
+                          <td>
+                            <% status_type, status = AlarmHelper.get_status_type_and_description(equipment.alarm_id) %>
+                        <% end %>
+                          <div class="alert <%= status_type %> align-items-center" role="alert">
+                            <div>
+                              <%= status %>
+                            </div>
+                          </div>
+                        </td>
+                        <td> 
+                          <%= link_to edit_equipment_path(equipment, source: @source_dict[:source]) do %>
+                            <i class="bi bi-pencil"></i>
+                          <% end %>
+                          <%= link_to equipment_path(equipment, source: @source_dict[:source]), data: { turbo_method: :delete, 
+                            turbo_confirm: "Are you sure?" } do %>
+                            <i class="bi bi-trash"></i>
+                          <% end %>
+                        </td>
+                      </tr>
                     <% end %>
-                </div>
-                </tbody>
-              </table>
+                  </tbody>
+                </table>
+            </div>
           </div>
         </div>
-      </div>
+      <% end %>
+    </div>
+    <br>
+    <% else %>
+      <p>Equipment not found.</p>
     <% end %>
   </div>
-  <br>
-  <% else %>
-    <p>Equipment not found.</p>
-  <% end %>
-</div>
+
+</turbo-frame>

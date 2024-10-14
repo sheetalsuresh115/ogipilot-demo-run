@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_27_022210) do
+ActiveRecord::Schema[7.1].define(version: 2024_10_10_061043) do
+# Could not dump table "backup_table" because of following StandardError
+#   Unknown type 'NUM' for column 'created_at'
+
   create_table "equipment", force: :cascade do |t|
     t.string "uuid"
     t.string "id_in_source"
@@ -49,13 +52,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_27_022210) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "provider_session_id"
-  end
-
-  create_table "users", force: :cascade do |t|
-    t.string "user_id"
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string "user_name"
+    t.string "password_digest"
   end
 
   add_foreign_key "measurements", "equipment"

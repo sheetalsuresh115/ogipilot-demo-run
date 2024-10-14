@@ -26,9 +26,9 @@ function measurementSetup() {
     var ctx = document.getElementById('vibrationsChart');
     if (ctx) {
       const data = {
-        labels: [],//timestamps,
+        labels: [],
         datasets: [{
-          label: ' Vibrations ',
+          label: '',//' Vibrations ',
           fill: false,
           data: dataPoints,
           borderColor: "#308af3",
