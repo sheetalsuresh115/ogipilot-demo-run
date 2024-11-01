@@ -17,7 +17,7 @@
             <%= render NavComponent.new() %>
           </header>
           <div>
-            <% if flash %>
+            <% if flash.any? %>
               <% if flash[:notice] %>
                 <div class="alert alert-success">
                   <%= flash[:notice] %>

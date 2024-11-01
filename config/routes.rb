@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     get 'active_standby', action: :active_standby, as: :active_standby
     get 'publish_subscribe', action: :publish_subscribe, as: :publish_subscribe
     get 'baseline_risk', action: :baseline_risk, as: :baseline_risk
+    get 'possible_failure', action: :possible_failure, as: :possible_failure
   end
 
   resources :ogi_pilot_sessions do
@@ -18,7 +19,6 @@ Rails.application.routes.draw do
 
   # equipment is plural and hence equipment_index_path is the index path for equipment.
   resources :ogi_pilot_sessions, :equipment
-  get 'check_for_risk', to: 'equipment#check_for_risk'
 
   resources :measurements, only: [:create]
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

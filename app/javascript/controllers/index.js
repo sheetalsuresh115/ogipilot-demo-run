@@ -9,3 +9,6 @@ application.register("hello", HelloController)
 
 import MeasurementsController from "./measurements_controller"
 application.register("measurements", MeasurementsController)
+
+import NotificationController from "./notification_controller"
+application.register("notification", NotificationController)

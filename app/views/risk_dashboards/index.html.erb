@@ -12,10 +12,6 @@
           <div class="row">
             <div class="col-md-4">
               <div class="card mb-4 box-shadow">
-                <%# <%= image_tag 'resource_breakdown_structure.svg'%>
-                <%# <%= render inline: Rails.root.join('app/assets/images/resource_breakdown_structure.svg').read %>
-                <%# # <img class="card-img-top" data-src="app/assets/images/resource_breakdown_structure.svg" alt="Card image cap"> %>
-                <%# <img class="card-img-top" src="app/assets/images/resource_breakdown_structure/100px180/" alt="Card image cap"> %>
                 <svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" 
                   aria-label="Break Down Structure" preserveAspectRatio="xMidYMid slice" focusable="false">
                   <rect width="100%" height="225%" fill="#868e96"></rect>
@@ -25,7 +21,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
                       <%= link_to "View", equipment_index_path(source: "BreakDownStructures"), method:'get', class:"btn btn-sm btn-outline-secondary" %>
-                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success"><%= $break_down_structure_notification %></span>
+                      
                     </div>
                     <small class="text-muted"></small>
                   </div>
@@ -43,7 +39,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
                       <%= button_to "View", measurements_path, method:'get', class:"btn btn-sm btn-outline-secondary" %>
-                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success"><%= $measurements_notification %></span>
+                      
                     </div>
                     <small class="text-muted"></small>
                   </div>
@@ -52,7 +48,7 @@
             </div>
             <div class="col-md-4">
               <div class="card mb-4 box-shadow">
-                <svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" 
+                <svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="todo" 
                   aria-label="Alarms" preserveAspectRatio="xMidYMid slice" focusable="false">
                   <rect width="100%" height="225%" fill="#868e96"></rect>
                   <text x="40%" y="60%" fill="#dee2e6" dy="0em" font-weight="bold">Alarms</text>
@@ -61,7 +57,7 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
                       <%= link_to "View", equipment_index_path(source: "Alarms"), method:'get', class:"btn btn-sm btn-outline-secondary" %>
-                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success"><%= $alarms_notification %></span>
+                      
                     </div>
                     <small class="text-muted"></small>
                   </div>
@@ -79,7 +75,7 @@
                 <div class="card-body">
                   <div class="btn-group">
                       <%= button_to "View", active_standby_path, method: 'get', class: "btn btn-sm btn-outline-secondary" %>
-                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success"><%= $active_components_notification %></span>
+                      
                   </div>
                   <div class="d-flex justify-content-between align-items-center">
                     <small class="text-muted"></small>
@@ -87,9 +83,24 @@
                 </div>
               </div>
             </div>
+            
           </div>
         </div>
       </div>
     </main>
+    <div data-controller="notification">
+      <div aria-live="polite" aria-atomic="true" style="min-height: 200px;">
+        <div style="top: 0; right: 0;">
+          <div data-notification-target="toast" id="notificationToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+              <strong class="mr-auto"> Notification </strong>
+              <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div data-notification-target="content" class="toast-body">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

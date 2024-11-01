@@ -17,7 +17,7 @@ function measurementSetup() {
   let chart
   let dataPoints = [];
   
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('turbo:load', () => {
     if (vibrations) {
       vibrations.forEach((number, index) => {
       dataPoints.push({ x: timestamps[index], y:vibrations[index] })
@@ -67,7 +67,7 @@ function measurementSetup() {
     }
 
 
-    document.addEventListener("measurementReceived", function (event) {
+    document.addEventListener("measurementReceived", (event) => {
       if (chart) {
         chart.data.datasets.forEach((dataset) => {
           if (dataset.data.length >= 10) dataset.data.shift();

@@ -57,12 +57,13 @@ class EquipmentController < ApplicationController
 
   def destroy
     @equipment = Equipment.find(params[:id])
-
-    if @equipment.destroy
-      flash[:notice] = "Equipment was successfully deleted."
-    else
-      flash[:alert] = "Failed to delete the equipment. There might be dependencies preventing the deletion."
-    end
+    @equipment.destroy
+    # Yet to fix the Flash message for Turbo. ( Use see_other)
+    # if @equipment.destroy
+    #   flash[:notice] = "Equipment was successfully deleted."
+    # else
+    #   flash[:alert] = "Failed to delete the equipment. There might be dependencies preventing the deletion."
+    # end
     redirect_to_source
   end
 
@@ -72,27 +73,6 @@ class EquipmentController < ApplicationController
     elsif params[:source] == "Alarms"
       redirect_to equipment_index_path(source: "Alarms")
     end
-  end
-
-  def check_for_risk
-    # messages = Array.new()
-    session = OgiPilotSession.find_by topic: "BaseLineRisk"
-    # messages = @session.read_messages()
-
-    if session.consumer_session_exists
-      session.read_messages().each do |message|
-        #TBD - Logic to read data from a syncBod and create the bodObject
-        update_equipment = Equipment.find_by(uuid: message.content[:uuid])
-        if update_equipment.present?
-          update_equipment.status_id = message.content[:status_id]
-          update_equipment.alarm_id = message.content[:alarm_id]
-          update_equipment.save
-        end
-      end
-    else
-      flash[:alert] = "Session does not exist. Please open a valid session."
-    end
-    redirect_to_source
   end
 
   def validate_source

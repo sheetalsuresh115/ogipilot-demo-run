@@ -1,11 +1,5 @@
 class RiskDashboardsController < ApplicationController
 
-  $break_down_structure_notification = 0
-  $measurements_notification = 0
-  $alarms_notification = 0
-  $active_components_notification = 0
-  $standby_components_notification = 0
-
   def measurements
     # Using ActionCables, data will be live streamed.
     measurements = Measurement.last(10)
@@ -27,18 +21,34 @@ class RiskDashboardsController < ApplicationController
     begin
       session = OgiPilotSession.find_by topic: "BaseLineRisk"
       if session && session.provider_session_exists
-        session.post_messages
-        redirect_back(fallback_location: root_path)
+        session.post_base_line_risk_message
       else
         flash[:alert] = "Please open a valid session!"
-        redirect_back(fallback_location: root_path)
       end
+      redirect_back(fallback_location: root_path)
 
     rescue IsbmAdaptor::IsbmFault => e
       fault_message = extract_fault_message(e.response_body)
-      # for REST path, cannot tell difference between no session and no message, so make a guess
       return check_session_fault_message_not_found(fault_message) if e.code == 404
       handle_session_access_api_error(e.code, fault_message)
     end
   end
+
+  def possible_failure
+    begin
+      session = OgiPilotSession.find_by topic: "PossibleFailure"
+      if session && session.provider_session_exists
+        session.post_possible_failure_message
+      else
+        flash[:alert] = "Please open a valid session!"
+      end
+      redirect_back(fallback_location: root_path)
+
+    rescue IsbmAdaptor::IsbmFault => e
+      fault_message = extract_fault_message(e.response_body)
+      return check_session_fault_message_not_found(fault_message) if e.code == 404
+      handle_session_access_api_error(e.code, fault_message)
+    end
+  end
+
 end
