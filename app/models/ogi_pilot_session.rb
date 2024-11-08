@@ -92,6 +92,16 @@ class OgiPilotSession < ApplicationRecord
     logger.debug "Posted message: #{posted_message_id}"
   end
 
+  def post_failure_message
+    client_details = get_consumer_provider_details()
+    # For demo only
+    update_equipment = Equipment.find_by(uuid:"40fd2683-4a0c-4e9d-b5ee-d8268ad017f2")
+    update_equipment.status_id = LifeCycleStatusHelper::UNDETERMINED
+    update_equipment.alarm_id = AlarmHelper::ABNORMAL
+    posted_message_id = client_details[:provider_client].post_publication(self.provider_session_id, update_equipment, [self.topic])
+    logger.debug "Posted message: #{posted_message_id}"
+  end
+
   def read_messages
     client_details = get_consumer_provider_details()
     messages = Array.new()

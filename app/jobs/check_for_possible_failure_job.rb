@@ -6,11 +6,11 @@ class CheckForPossibleFailureJob < ApplicationJob
     session = OgiPilotSession.find_by topic: "PossibleFailure"
     if session.consumer_session_exists
       session.read_messages.each do |message|
+
+        ### CALL THE CONVERTER HERE
         update_equipment = Equipment.find_by(uuid: message.content[:uuid])
         if update_equipment.present?
-          update_equipment.status_id = message.content[:status_id]
-          update_equipment.alarm_id = message.content[:alarm_id]
-          update_equipment.save!
+          update_equipment.update_status_and_alarm(message)
           ActionCable.server.broadcast("notification_channel", {equipment: update_equipment.uuid, value: "Possible Failure ~ Equipment #{update_equipment.id}" })
         end
       end

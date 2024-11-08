@@ -359,6 +359,7 @@ DEPENDENCIES
   importmap-rails
   isbm2_adaptor_rest (~> 2.0.1.2)
   jbuilder
+  nokogiri
   puma (>= 5.0)
   rack (~> 2.0, >= 2.0.6)
   rack-contrib (~> 2.1, >= 2.1.0)

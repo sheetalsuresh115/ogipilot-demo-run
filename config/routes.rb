@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     get 'publish_subscribe', action: :publish_subscribe, as: :publish_subscribe
     get 'baseline_risk', action: :baseline_risk, as: :baseline_risk
     get 'possible_failure', action: :possible_failure, as: :possible_failure
+    get 'failure', action: :failure, as: :failure
   end
 
   resources :ogi_pilot_sessions do

@@ -1,31 +1,45 @@
 <div class="navbar navbar-dark bg-dark box-shadow">
     <div class="container d-flex justify-content-between">
-    <a href="/" class="navbar-brand d-flex align-items-center">
-        <strong >Risk Demonstration DashBoard</strong>
-    </a>
-    <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <span class="navbar-toggler-icon"></span>
-        </button>
-        <ul class="dropdown-menu">
-        <li><%= button_to "Session Management", ogi_pilot_sessions_path, method: 'get', class: "btn" %></li>
-        <li><%= button_to "Job Management", sidekiq_web_path, method: 'get', class: "btn" %></li>
-        </ul>
-    
-        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <span>Events</span>
-        </button>
-        <ul class="dropdown-menu">
-        <li><%= button_to "Baseline Risk Info", baseline_risk_path, method: 'get', class: "btn" %></li>
-        <li><%= button_to "Possible Failure Alert", possible_failure_path, method: 'get', class: "btn" %></li>
-        <li><%= button_to "M1 Active Failed", baseline_risk_path, method: 'get', class: "btn" %></li>
-        <li><%= button_to "M2 StandBy Active", baseline_risk_path, method: 'get', class: "btn" %></li>
-        <li><%= button_to "M2 Risk Info Update", baseline_risk_path, method: 'get', class: "btn" %></li>
-        <li><%= button_to "New Motor Installed", baseline_risk_path, method: 'get', class: "btn" %></li>
-        <li><%= button_to "Updated Operation Risk Info", baseline_risk_path, method: 'get', class: "btn" %></li>
-        <li><%= button_to "Updated Risk Info", baseline_risk_path, method: 'get', class: "btn" %></li>
-        <li><%= button_to "Updated Last Risk Info", baseline_risk_path, method: 'get', class: "btn" %></li>
-        </ul>
+        <a href="/" class="navbar-brand d-flex align-items-center">
+            <strong >Risk Demonstration DashBoard</strong>
+        </a>
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <ul class="dropdown-menu">
+            <li><%= button_to "Session Management", ogi_pilot_sessions_path, method: 'get', class: "btn" %></li>
+            <li><%= button_to "Job Management", sidekiq_web_path, method: 'get', class: "btn" %></li>
+            </ul>
+        
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span>Events</span>
+            </button>
+            <ul class="dropdown-menu">
+            <li><%= button_to "Baseline Risk Update", baseline_risk_path, method: 'get', class: "btn" %></li>
+            <li><%= button_to "Possible Failure Alert", possible_failure_path, method: 'get', class: "btn" %></li>
+            <li><%= button_to "Equipment Failure", failure_path, method: 'get', class: "btn" %></li>
+            <li><%= button_to "M2 StandBy Active", baseline_risk_path, method: 'get', class: "btn" %></li>
+            <li><%= button_to "M2 Risk Info Update", baseline_risk_path, method: 'get', class: "btn" %></li>
+            <li><%= button_to "New Motor Installed", baseline_risk_path, method: 'get', class: "btn" %></li>
+            <li><%= button_to "Updated Operation Risk Info", baseline_risk_path, method: 'get', class: "btn" %></li>
+            <li><%= button_to "Updated Risk Info", baseline_risk_path, method: 'get', class: "btn" %></li>
+            <li><%= button_to "Updated Last Risk Info", baseline_risk_path, method: 'get', class: "btn" %></li>
+            </ul>
+        </div>
     </div>
+</div>
+<div data-controller="notification">
+    <div aria-live="polite" aria-atomic="true" style="position: fixed; top: 60px; right: 20px; z-index: 1050;">
+        <div style="top: 0; right: 0;">
+        <div data-notification-target="toast" id="notificationToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="mr-auto text-danger"> Notification </strong>
+                <button type="button" class="btn-close ms-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div data-notification-target="content" class="toast-body">
+            </div>
+        </div>
+        </div>
     </div>
 </div>

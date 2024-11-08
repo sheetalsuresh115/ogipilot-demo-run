@@ -10,9 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_10_10_061043) do
-# Could not dump table "backup_table" because of following StandardError
-#   Unknown type 'NUM' for column 'created_at'
+ActiveRecord::Schema[7.1].define(version: 2024_11_07_062059) do
+  create_table "break_down_structures", force: :cascade do |t|
+    t.string "uuid"
+    t.string "from"
+    t.string "to"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "equipment", force: :cascade do |t|
     t.string "uuid"
@@ -32,6 +37,20 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_10_061043) do
     t.string "status_id"
     t.string "alarm_id"
     t.boolean "is_active"
+  end
+
+  create_table "functional_locations", force: :cascade do |t|
+    t.string "uuid"
+    t.string "description"
+    t.string "status_id"
+    t.string "segment_type"
+    t.string "id_in_source"
+    t.string "short_name"
+    t.string "alarm_id"
+    t.boolean "is_active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "break_down_structure_id"
   end
 
   create_table "measurements", force: :cascade do |t|
@@ -56,5 +75,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_10_061043) do
     t.string "password_digest"
   end
 
+  create_table "users", force: :cascade do |t|
+    t.string "user_id"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "functional_locations", "break_down_structures"
   add_foreign_key "measurements", "equipment"
 end
