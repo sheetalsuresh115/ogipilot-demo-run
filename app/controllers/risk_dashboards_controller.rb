@@ -27,10 +27,9 @@ class RiskDashboardsController < ApplicationController
       end
       redirect_back(fallback_location: root_path)
 
-    rescue IsbmAdaptor::IsbmFault => e
-      fault_message = extract_fault_message(e.response_body)
-      return check_session_fault_message_not_found(fault_message) if e.code == 404
-      handle_session_access_api_error(e.code, fault_message)
+    rescue StandardError, IsbmAdaptor::ChannelFault, IsbmAdaptor::SessionFault, IsbmAdaptor::ParameterFault,
+      IsbmAdaptor::IsbmFault => e
+      logger.debug " Exception during risk #{e}"
     end
   end
 
@@ -44,10 +43,9 @@ class RiskDashboardsController < ApplicationController
       end
       redirect_back(fallback_location: root_path)
 
-    rescue IsbmAdaptor::IsbmFault => e
-      fault_message = extract_fault_message(e.response_body)
-      return check_session_fault_message_not_found(fault_message) if e.code == 404
-      handle_session_access_api_error(e.code, fault_message)
+    rescue StandardError, IsbmAdaptor::ChannelFault, IsbmAdaptor::SessionFault, IsbmAdaptor::ParameterFault,
+      IsbmAdaptor::IsbmFault => e
+      logger.debug " Exception during failure #{e}"
     end
   end
 
@@ -61,10 +59,25 @@ class RiskDashboardsController < ApplicationController
       end
       redirect_back(fallback_location: root_path)
 
-    rescue IsbmAdaptor::IsbmFault => e
-      fault_message = extract_fault_message(e.response_body)
-      return check_session_fault_message_not_found(fault_message) if e.code == 404
-      handle_session_access_api_error(e.code, fault_message)
+    rescue StandardError, IsbmAdaptor::ChannelFault, IsbmAdaptor::SessionFault, IsbmAdaptor::ParameterFault,
+      IsbmAdaptor::IsbmFault => e
+      logger.debug " Exception during failure #{e}"
+    end
+  end
+
+  def sync_segment
+    begin
+      session = OgiPilotSession.find_by topic: "SyncSegments"
+      if session && session.provider_session_exists
+        session.post_sync_segment_message
+      else
+        flash[:alert] = "Please open a valid session!"
+      end
+      redirect_back(fallback_location: root_path)
+
+    rescue StandardError, IsbmAdaptor::ChannelFault, IsbmAdaptor::SessionFault, IsbmAdaptor::ParameterFault,
+      IsbmAdaptor::IsbmFault => e
+      logger.debug " Exception during syncSegment #{e}"
     end
   end
 

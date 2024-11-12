@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     get 'baseline_risk', action: :baseline_risk, as: :baseline_risk
     get 'possible_failure', action: :possible_failure, as: :possible_failure
     get 'failure', action: :failure, as: :failure
+    get 'sync_segment', action: :sync_segment, as: :sync_segment
   end
 
   resources :ogi_pilot_sessions do

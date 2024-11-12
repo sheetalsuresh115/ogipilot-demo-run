@@ -23,7 +23,6 @@ include SyncSegmentsConverter
 
     xml_doc = Nokogiri::XML(File.open('C:\Users\sureshs\Visual Studio\Visual Studio Code Repo\ogipilot-demo-run\ogipilot-demo-run\data\SyncSegments.xml.erb'))
     floc_change, all_fields = read_sync_bod(xml_doc)
-    debugger
     assert(floc_change, "sync_complete")
   end
 

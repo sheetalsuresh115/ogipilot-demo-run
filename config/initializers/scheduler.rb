@@ -30,4 +30,9 @@ if defined?(Rails::Server)
     # logger.debug "CheckForFailureJob Id: #{job.provider_job_id}"
   end
 
+  scheduler.every '3s' do
+    job = SyncSegmentsJob.perform_later
+    # logger.debug "CheckForFailureJob Id: #{job.provider_job_id}"
+  end
+
 end

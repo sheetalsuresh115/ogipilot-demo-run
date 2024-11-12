@@ -7,7 +7,7 @@ class FunctionalLocation < ApplicationRecord
   validates :status_id, presence: true
   validates :alarm_id, presence: true
   validates :is_active, presence: true
-  belongs_to :break_down_structure
+  belongs_to :break_down_structure, optional: true
 
   def assign_values_to_floc_from_sync_segments(segment_info, bds)
     self.id_in_source = segment_info[:infoSource][:uUID]
