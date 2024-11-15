@@ -8,31 +8,16 @@ if defined?(Rails::Server)
     # Active Job and SideKiq have separate job ids.
     job = LoadMeasurementsJob.perform_later
     # logger.debug "Measurement Job Id: #{job.provider_job_id}"
+    job = CheckForBaseLineRiskJob.perform_later
+    job = CheckForPossibleFailureJob.perform_later
+    job = CheckForFailureJob.perform_later
+    job = SyncSegmentsJob.perform_later
+    job = SyncAssetsJob.perform_later
   end
 
   scheduler.every '2min' do
     job = CleanUpMeasurementsJob.perform_later
     # logger.debug "CleanUpMeasurementsJob Job Id: #{job.provider_job_id}"
-  end
-
-  scheduler.every '3s' do
-    job = CheckForBaseLineRiskJob.perform_later
-    # logger.debug "CheckForBaseLineRiskJob Id: #{job.provider_job_id}"
-  end
-
-  scheduler.every '3s' do
-    job = CheckForPossibleFailureJob.perform_later
-    # logger.debug "CheckForPossibleFailureJob Id: #{job.provider_job_id}"
-  end
-
-  scheduler.every '3s' do
-    job = CheckForFailureJob.perform_later
-    # logger.debug "CheckForFailureJob Id: #{job.provider_job_id}"
-  end
-
-  scheduler.every '3s' do
-    job = SyncSegmentsJob.perform_later
-    # logger.debug "CheckForFailureJob Id: #{job.provider_job_id}"
   end
 
 end

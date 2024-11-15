@@ -26,20 +26,6 @@
                 <% end %>
             </div>
             <div class="mb-3">
-                <%= form.label :functional_location_id, 'Functional Location:' %>
-                <%= form.text_field(:functional_location_id, placeholder: 'Functional Location') %>
-                <% @equipment.errors.full_messages_for(:functional_location_id).each do |message| %>
-                    <div class="text-danger"><%= message %></div>
-                <% end %>
-            </div>
-            <div class="mb-3 ">
-                <%= form.label :segment_uuid, 'Segment UUID:' %>
-                <%= form.text_field(:segment_uuid, placeholder: 'Segment UUID') %>
-                <% @equipment.errors.full_messages_for(:segment_uuid).each do |message| %>
-                    <div class="text-danger"><%= message %></div>
-                <% end %>
-            </div>
-            <div class="mb-3">
                 <%= form.label :site_id, 'Site Id:'  %>
                 <%= form.text_field(:site_id, placeholder: 'Site Id') %>
                 <% @equipment.errors.full_messages_for(:site_id).each do |message| %>

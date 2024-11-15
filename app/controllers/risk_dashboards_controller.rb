@@ -66,19 +66,29 @@ class RiskDashboardsController < ApplicationController
   end
 
   def sync_segment
-    begin
-      session = OgiPilotSession.find_by topic: "SyncSegments"
-      if session && session.provider_session_exists
-        session.post_sync_segment_message
-      else
-        flash[:alert] = "Please open a valid session!"
-      end
-      redirect_back(fallback_location: root_path)
+    session = OgiPilotSession.find_by topic: "SyncSegments"
+    post_message(session)
+  end
 
+  def sync_asset
+    session = OgiPilotSession.find_by topic: "SyncAssets"
+    post_message(session)
+  end
+
+  def post_message(session)
+    if session && session.provider_session_exists
+      data_path = ""
+      data_path = Settings.data.sync_segment_path if session.topic == "SyncSegments"
+      data_path = Settings.data.sync_asset_path if session.topic == "SyncAssets"
+
+      session.post_sync_message(data_path)
+    else
+      flash[:alert] = "Please open a valid session!"
+    end
+    redirect_back(fallback_location: root_path)
     rescue StandardError, IsbmAdaptor::ChannelFault, IsbmAdaptor::SessionFault, IsbmAdaptor::ParameterFault,
       IsbmAdaptor::IsbmFault => e
-      logger.debug " Exception during syncSegment #{e}"
-    end
+      logger.debug " Exception during publishing syncSegment #{e}"
   end
 
 end

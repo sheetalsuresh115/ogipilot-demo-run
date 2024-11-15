@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_07_062059) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_12_071847) do
   create_table "break_down_structures", force: :cascade do |t|
     t.string "uuid"
     t.string "from"
@@ -37,6 +37,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_07_062059) do
     t.string "status_id"
     t.string "alarm_id"
     t.boolean "is_active"
+    t.string "asset_type"
+    t.string "manufacturer"
+    t.string "model"
+    t.string "serial_number"
   end
 
   create_table "functional_locations", force: :cascade do |t|
@@ -82,6 +86,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_07_062059) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "equipment", "functional_locations"
   add_foreign_key "functional_locations", "break_down_structures"
   add_foreign_key "measurements", "equipment"
 end

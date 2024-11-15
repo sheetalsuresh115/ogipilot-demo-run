@@ -86,7 +86,7 @@ class EquipmentController < ApplicationController
 
   private
     def equipment_params
-      params.require(:equipment).permit(:uuid, :id_in_source, :functional_location_id, :segment_uuid, :site_id, :short_name,
+      params.require(:equipment).permit(:uuid, :id_in_source, :site_id, :short_name,
         :properties, :bod_content, :status_id, :alarm_id, :is_active)
     end
 

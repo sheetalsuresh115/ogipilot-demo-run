@@ -102,10 +102,10 @@ class OgiPilotSession < ApplicationRecord
     logger.debug "Posted message: #{posted_message_id}"
   end
 
-  def post_sync_segment_message
+  def post_sync_message(message_path)
     client_details = get_consumer_provider_details()
     # For demo only
-    xml_doc = File.open('C:\Users\sureshs\Visual Studio\Visual Studio Code Repo\ogipilot-demo-run\ogipilot-demo-run\data\SyncSegments.xml.erb')
+    xml_doc = File.open(message_path)
     xml_doc = Nokogiri::XML(xml_doc.read.to_s).to_xml
     posted_message_id = client_details[:provider_client].post_publication(self.provider_session_id, xml_doc, [self.topic])
     logger.debug "Posted message: #{posted_message_id}"

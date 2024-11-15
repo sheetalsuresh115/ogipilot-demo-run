@@ -18,5 +18,7 @@ class CheckForPossibleFailureJob < ApplicationJob
       flash[:alert] = "Session does not exist. Please open a valid session."
     end
 
+    rescue StandardError => e
+      Rails.logger.error("\n Check For Possible Failure Job - Exception #{e}")
   end
 end

@@ -16,7 +16,8 @@
             <span>Events</span>
             </button>
             <ul class="dropdown-menu">
-            <li><%= button_to "Read SyncSegments", sync_segment_path, method: 'get', class: "btn" %></li>
+            <li><%= button_to "Post SyncSegments", sync_segment_path, method: 'get', class: "btn" %></li>
+            <li><%= button_to "Post SyncAssets", sync_asset_path, method: 'get', class: "btn" %></li>
             <li><%= button_to "Baseline Risk Update", baseline_risk_path, method: 'get', class: "btn" %></li>
             <li><%= button_to "Possible Failure Alert", possible_failure_path, method: 'get', class: "btn" %></li>
             <li><%= button_to "Equipment Failure", failure_path, method: 'get', class: "btn" %></li>

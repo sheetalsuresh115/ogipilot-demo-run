@@ -4,13 +4,6 @@ require "test_helper"
 
 class SyncSegmentsConverterTest < ActiveSupport::TestCase
 include SyncSegmentsConverter
-  def test_read_bod_contents
-    # let expected_bod BodConverter::SyncActualEventsBodConverter
-    # assert_equal(
-    #   %(<span>Hello, components!</span>),
-    #   render_inline(ActiveComponentsComponent.new(message: "Hello, components!")).css("span").to_html
-    # )
-  end
 
   test "read from xml file" do
     xml_doc = Nokogiri::XML(File.open('C:\Users\sureshs\Visual Studio\Visual Studio Code Repo\ogipilot-demo-run\ogipilot-demo-run\data\SyncSegments.xml.erb'))

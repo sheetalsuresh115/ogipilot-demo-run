@@ -16,6 +16,8 @@ class CheckForBaseLineRiskJob < ApplicationJob
     else
       flash[:alert] = "Session does not exist. Please open a valid session."
     end
+    rescue StandardError => e
+      Rails.logger.error("\n BaseLinkRisk Job - Exception #{e}")
 
   end
 end
