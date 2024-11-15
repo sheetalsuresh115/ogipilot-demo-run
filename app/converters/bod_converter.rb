@@ -1,12 +1,22 @@
 module BodConverter
-  include SyncActualEventsBodConverter
-  def convert_bod_to_equipment_object
-    xml_doc = Nokogiri::XML(File.open('C:\Users\sureshs\Visual Studio\Visual Studio Code Repo\ogipilot-demo-run\ogipilot-demo-run\data\SyncActualEvents.xml.erb'))
-    xml_hash = Hash.from_xml(xml_doc.to_s).deep_transform_keys { |key| xml_to_hash_key_transformer(key) }
-    equipment_obj = convert_sync_actual_events_bod_to_equipment_object(xml_hash)
-  end
 
-  def xml_to_hash_key_transformer(key)
+  def read_sync_bod(bod, x_path, opts={})
+    bod_change = []
+    if bod.class == Nokogiri::XML::Document
+      bod_new = bod
+    else
+      bod_new = Nokogiri::XML(bod)
+    end
+    bod_new.remove_namespaces!
+
+    bod_new.xpath(x_path).each do |noun|
+      hash_noun = Hash.from_xml(noun.to_s).deep_transform_keys{ |key| key.to_s.camelize(:lower) }
+      bod_change << process_sync_noun(hash_noun.with_indifferent_access)
+    end
+    return bod_change
+
+    rescue StandardError => e
+      Rails.logger.error("\n Asset COULD NOT be created #{e}")
   end
 
 end

@@ -1,23 +1,5 @@
 module SyncSegmentsConverter
-
-  def read_sync_bod(bod, opts={})
-    floc_change = []
-    if bod.class == Nokogiri::XML::Document
-      bod_new = bod
-    else
-      bod_new = Nokogiri::XML(bod)
-    end
-
-    bod_new.remove_namespaces!
-    # process noun with collected update fields and values
-    bod_new.xpath('//Segment').each do |noun|
-      hash_noun = Hash.from_xml(noun.to_s).deep_transform_keys{ |key| key.to_s.camelize(:lower) }
-      floc_change << process_sync_noun(hash_noun.with_indifferent_access)
-    end
-
-    return floc_change
-  end
-
+  include BodConverter
   def process_sync_noun(noun)
     segment_noun = noun[:segment]
     segment_noun[:childComponent].each do |child_component|
