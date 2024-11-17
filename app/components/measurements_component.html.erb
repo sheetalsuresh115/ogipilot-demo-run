@@ -1,1 +1,11 @@
-<div>Add Measurements template here</div>
+<div class="container">
+    <div>
+        <h2 class="text-center">Measurements</h2>
+        <div id="timestamps-data" data-timestamps="<%= @timestamps %>"></div>
+        <div id="vibrations-data" data-vibrations="<%= @vibrations %>"></div>
+
+        <div data-controller="measurements">
+            <canvas id="vibrationsChart" width="800" height="450"></canvas>
+        </div>
+    </div>
+</div>
