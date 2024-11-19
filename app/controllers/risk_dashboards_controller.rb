@@ -75,11 +75,17 @@ class RiskDashboardsController < ApplicationController
     post_message(session)
   end
 
+  def sync_asset_segment_events
+    session = OgiPilotSession.find_by topic: "SyncAssetSegmentEvents"
+    post_message(session)
+  end
+
   def post_message(session)
     if session && session.provider_session_exists
       data_path = ""
       data_path = Settings.data.sync_segment_path if session.topic == "SyncSegments"
       data_path = Settings.data.sync_asset_path if session.topic == "SyncAssets"
+      data_path = Settings.data.sync_asset_segment_events_path if session.topic == "SyncAssetSegmentEvents"
 
       session.post_sync_message(data_path)
     else

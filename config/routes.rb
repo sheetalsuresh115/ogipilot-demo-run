@@ -13,6 +13,7 @@ Rails.application.routes.draw do
     get 'failure', action: :failure, as: :failure
     get 'sync_segment', action: :sync_segment, as: :sync_segment
     get 'sync_asset', action: :sync_asset, as: :sync_asset
+    get 'sync_asset_segment_events', action: :sync_asset_segment_events, as: :sync_asset_segment_events
   end
 
   resources :ogi_pilot_sessions do

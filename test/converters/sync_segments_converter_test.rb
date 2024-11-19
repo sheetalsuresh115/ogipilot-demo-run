@@ -15,8 +15,7 @@ include SyncSegmentsConverter
   test "read sync segments and create functional location" do
 
     xml_doc = Nokogiri::XML(File.open('C:\Users\sureshs\Visual Studio\Visual Studio Code Repo\ogipilot-demo-run\ogipilot-demo-run\data\SyncSegments.xml.erb'))
-    floc_change, all_fields = read_sync_bod(xml_doc)
-    assert(floc_change, "sync_complete")
+    read_sync_bod(xml_doc, "//Segment")
   end
 
 end

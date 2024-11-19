@@ -1,18 +1,19 @@
 module SyncSegmentsConverter
   include BodConverter
+
   def process_sync_noun(noun)
-    segment_noun = noun[:segment]
-    segment_noun[:childComponent].each do |child_component|
-      process_sync_child_components(child_component)
-    end
-    Rails.logger.debug "\n Functional Location  successfully created"
-    return "sync_complete"
+    begin
+      segment_noun = noun[:segment]
+      segment_noun[:childComponent].each do |child_component|
+        process_sync_child_components(child_component)
+      end
+      Rails.logger.debug "\n Functional Location  successfully created"
     rescue StandardError => e
       Rails.logger.error("\n Functional Location COULD NOT be created #{e}")
+    end
   end
 
   def process_sync_child_components(segment)
-
     # If the child Component has children, then break down structures are added ( parent / child info is stored)
     # Safe check - if not present, the value is nil and nil.each throws an exception
     if segment[:child][:childComponent].present?

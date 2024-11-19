@@ -8,7 +8,9 @@ class SyncSegmentsJob < ApplicationJob
     session = OgiPilotSession.find_by topic: "SyncSegments"
     if session.consumer_session_exists
       session.read_messages().each do |message|
-        _ = read_sync_bod(Nokogiri::XML(message.content.to_s).to_xml, "//Segment")
+        read_sync_bod(Nokogiri::XML(message.content.to_s).to_xml, "//Segment")
+        Rails.logger.debug("\n Read SyncSegments and added new FunctionalLocations")
+        ActionCable.server.broadcast("notification_channel", {value: "Segment Sync completed." })
       end
     else
       flash[:alert] = "Session does not exist. Please open a valid session."

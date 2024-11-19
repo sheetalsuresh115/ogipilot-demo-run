@@ -6,6 +6,7 @@ if defined?(Rails::Server)
 
   scheduler.every '3s' do
     # Active Job and SideKiq have separate job ids.
+    #TO DO SAVE JOB INFO
     job = LoadMeasurementsJob.perform_later
     # logger.debug "Measurement Job Id: #{job.provider_job_id}"
     job = CheckForBaseLineRiskJob.perform_later
@@ -13,6 +14,7 @@ if defined?(Rails::Server)
     job = CheckForFailureJob.perform_later
     job = SyncSegmentsJob.perform_later
     job = SyncAssetsJob.perform_later
+    job = SyncAssetSegmentEventsJob.perform_later
   end
 
   scheduler.every '2min' do
