@@ -65,27 +65,40 @@ class RiskDashboardsController < ApplicationController
     end
   end
 
-  def sync_segment
+  def segment
     session = OgiPilotSession.find_by topic: "SyncSegments"
     post_message(session)
   end
 
-  def sync_asset
+  def asset
     session = OgiPilotSession.find_by topic: "SyncAssets"
     post_message(session)
   end
 
-  def sync_asset_segment_events
+  def asset_segment_event
     session = OgiPilotSession.find_by topic: "SyncAssetSegmentEvents"
     post_message(session)
   end
 
+  def break_down_structure
+    session = OgiPilotSession.find_by topic: "SyncBreakDownStructures"
+    post_message(session)
+  end
+
+  def actual_event
+    session = OgiPilotSession.find_by topic: "SyncActualEvents"
+    post_message(session)
+  end
+
   def post_message(session)
+
     if session && session.provider_session_exists
       data_path = ""
       data_path = Settings.data.sync_segment_path if session.topic == "SyncSegments"
       data_path = Settings.data.sync_asset_path if session.topic == "SyncAssets"
       data_path = Settings.data.sync_asset_segment_events_path if session.topic == "SyncAssetSegmentEvents"
+      data_path = Settings.data.sync_break_down_structures_path if session.topic == "SyncBreakDownStructures"
+      data_path = Settings.data.sync_actual_events_path if session.topic == "SyncActualEvents"
 
       session.post_sync_message(data_path)
     else

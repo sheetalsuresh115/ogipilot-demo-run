@@ -15,6 +15,8 @@ if defined?(Rails::Server)
     job = SyncSegmentsJob.perform_later
     job = SyncAssetsJob.perform_later
     job = SyncAssetSegmentEventsJob.perform_later
+    job = SyncBreakDownStructuresJob.perform_later
+    job = SyncActualEventsJob.perform_later
   end
 
   scheduler.every '2min' do

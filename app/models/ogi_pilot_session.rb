@@ -1,4 +1,5 @@
 class OgiPilotSession < ApplicationRecord
+
   has_secure_password
   validates :end_point, presence: true
   validates :channel, presence: true

@@ -13,8 +13,15 @@ module BodConverter
       process_sync_noun(hash_noun.with_indifferent_access)
     end
 
-    rescue StandardError => e
-      Rails.logger.error("\n Asset COULD NOT be created #{e}")
+  end
+
+  # As discussed, creating this as a backup for missing flocs
+  # comments are added to inspect further.
+  def create_missing_floc(floc_info, noun_value)
+    floc = FunctionalLocation.new(uuid: floc_info[:uUID])
+    floc.create_functional_location_with_minimal_info(floc_info, "Floc Missing: Floc added from #{noun_value}")
+    floc.save!
+    return floc
   end
 
 end

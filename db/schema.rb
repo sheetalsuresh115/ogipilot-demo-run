@@ -10,13 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_12_071847) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_25_225139) do
+  create_table "actual_events", force: :cascade do |t|
+    t.string "uuid"
+    t.string "group_uuid"
+    t.string "attribute_type"
+    t.string "value"
+    t.string "uom"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "functional_location_id"
+  end
+
+# Could not dump table "backup_table" because of following StandardError
+#   Unknown type 'NUM' for column 'created_at'
+
   create_table "break_down_structures", force: :cascade do |t|
     t.string "uuid"
     t.string "from"
     t.string "to"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "short_name"
+    t.string "functional_location_id"
   end
 
   create_table "equipment", force: :cascade do |t|
@@ -55,6 +71,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_12_071847) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "break_down_structure_id"
+    t.string "comments"
   end
 
   create_table "measurements", force: :cascade do |t|
@@ -64,6 +81,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_12_071847) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["equipment_id"], name: "index_measurements_on_equipment_id"
+  end
+
+  create_table "model_objects", force: :cascade do |t|
+    t.string "created_by"
+    t.string "modified_by"
+    t.datetime "date_created"
+    t.datetime "date_modified"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "ogi_pilot_sessions", force: :cascade do |t|
@@ -79,13 +105,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_12_071847) do
     t.string "password_digest"
   end
 
-  create_table "users", force: :cascade do |t|
-    t.string "user_id"
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
+  add_foreign_key "actual_events", "functional_locations"
+  add_foreign_key "break_down_structures", "functional_locations"
   add_foreign_key "equipment", "functional_locations"
   add_foreign_key "functional_locations", "break_down_structures"
   add_foreign_key "measurements", "equipment"

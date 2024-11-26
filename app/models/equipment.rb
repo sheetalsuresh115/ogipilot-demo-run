@@ -1,4 +1,5 @@
 class Equipment < ApplicationRecord
+
   validates :uuid, presence: true
   validates :id_in_source, presence: true
   validates :short_name, presence: true
