@@ -29,3 +29,9 @@
 
 en:
   hello: "Hello world"
+  user_name: "User Name"
+  password: "Password"
+  message_type: "Message Type"
+  topic: "Topic"
+  channel: "Channel"
+  end_point: "End Point"

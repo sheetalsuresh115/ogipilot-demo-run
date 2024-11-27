@@ -30,13 +30,15 @@ gem "cssbundling-rails"
 gem "jbuilder"
 
 # Use Redis adapter to run Action Cable in production
-# gem "redis", ">= 4.0.1"
+gem "redis", "~> 5.3.0"
+
+gem 'nokogiri'
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-# gem "bcrypt", "~> 3.1.7"
+gem "bcrypt", "~> 3.1.7"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
@@ -44,14 +46,22 @@ gem "tzinfo-data", platforms: %i[ windows jruby ]
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 
-
 #ViewComponents
 gem "view_component"
+gem "config"
 
-gem "rspec-core"
+#RDBG debug
+# gem "debug", require: false
 
-#The ISBM Adaptor provides a Ruby API for the OpenO&M ws-ISBM specification.
-gem "isbm_adaptor"
+gem "bootstrap"
+gem "sassc-rails"
+
+#ISBM v2 Adaptor (REST) - Added this locally
+gem 'isbm2_adaptor_rest', '~> 2.0.1.2'
+
+#Below is needed to trigger NotificationService
+gem 'rack', '~> 2.0', '>= 2.0.6'
+gem 'rack-contrib', '~> 2.1', '>= 2.1.0'
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
@@ -59,6 +69,12 @@ gem "isbm_adaptor"
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ]
+  gem "typhoeus"
+  gem "ruby-lsp"
+  gem "rubocop"
+  gem 'rspec-expectations', '~> 3.13.0'
+  gem 'rspec', '~> 3.10'
+  gem "rspec-core"
 end
 
 group :development do
@@ -77,3 +93,10 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+# Scheduler
+gem "sidekiq", "~> 7.3"
+# Sidekiq-scheduler supports minutes, hours, days etc.
+gem "sidekiq-scheduler"
+# Rufus scheduler supports seconds in addition to the usual time scheduling options.
+gem "rufus-scheduler"
