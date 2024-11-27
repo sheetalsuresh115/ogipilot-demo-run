@@ -3,17 +3,17 @@ module SyncBreakDownStructuresConverter
 
   def process_sync_noun(noun)
     begin
-      floc = FunctionalLocation.find_by uuid: noun[:breakdownStructure][:networkForSegment][:segment][:uUID]
+      floc = FunctionalLocation.find_by uuid: noun.dig("breakdownStructure","networkForSegment","segment","uUID")
       unless floc.present?
-        floc = create_missing_floc(noun[:breakdownStructure][:networkForSegment][:segment], "SyncBreakDownStructures")
+        floc = create_missing_floc(noun.dig("breakdownStructure","networkForSegment","segment"), "SyncBreakDownStructures")
       end
 
-      noun[:breakdownStructure][:connection].each do |connection|
+      noun.dig("breakdownStructure","connection").each do |connection|
 
-        bds = BreakDownStructure.find_by(uuid: noun[:breakdownStructure][:uUID], from: connection[:from][:uUID], to: connection[:to][:uUID])
+        bds = BreakDownStructure.find_by(uuid: noun.dig("breakdownStructure","uUID"), from: connection.dig("from","uUID"), to: connection.dig("to","uUID"))
         unless bds.present?
-          bds = BreakDownStructure.create(uuid: noun[:breakdownStructure][:uUID], from: connection[:from][:uUID], to: connection[:to][:uUID],
-            short_name: noun[:breakdownStructure][:shortName], functional_location: floc)
+          bds = BreakDownStructure.create(uuid: noun.dig("breakdownStructure","uUID"), from: connection.dig("from","uUID"), to: connection.dig("to","uUID"),
+            short_name: noun.dig("breakdownStructure","shortName"), functional_location: floc)
         end
 
       end

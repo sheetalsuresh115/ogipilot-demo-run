@@ -1,5 +1,13 @@
 class RiskDashboardsController < ApplicationController
 
+  TOPIC_PATHS = {
+    "SyncSegments" => Settings.data.sync_segment_path,
+    "SyncAssets" => Settings.data.sync_asset_path,
+    "SyncAssetSegmentEvents" => Settings.data.sync_asset_segment_events_path,
+    "SyncBreakDownStructures" => Settings.data.sync_break_down_structures_path,
+    "SyncActualEvents" => Settings.data.sync_actual_events_path
+  }.freeze
+
   def measurements
     # Using ActionCables, data will be live streamed.
     measurements = Measurement.last(10)
@@ -93,13 +101,7 @@ class RiskDashboardsController < ApplicationController
   def post_message(session)
 
     if session && session.provider_session_exists
-      data_path = ""
-      data_path = Settings.data.sync_segment_path if session.topic == "SyncSegments"
-      data_path = Settings.data.sync_asset_path if session.topic == "SyncAssets"
-      data_path = Settings.data.sync_asset_segment_events_path if session.topic == "SyncAssetSegmentEvents"
-      data_path = Settings.data.sync_break_down_structures_path if session.topic == "SyncBreakDownStructures"
-      data_path = Settings.data.sync_actual_events_path if session.topic == "SyncActualEvents"
-
+      data_path = TOPIC_PATHS[session.topic]
       session.post_sync_message(data_path)
     else
       flash[:alert] = "Please open a valid session!"
