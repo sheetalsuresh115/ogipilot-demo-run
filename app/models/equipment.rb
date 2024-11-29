@@ -25,15 +25,15 @@ class Equipment < ApplicationRecord
   end
 
   def assign_values_to_asset_from_sync_assets(asset_info, floc)
-    self.id_in_source = asset_info[:infoSource][:uUID]
-    self.short_name = asset_info[:shortName]
-    self.asset_type = asset_info[:type][:uUID]
-    self.manufacturer = asset_info[:manufacturer][:uUID]
-    self.model = asset_info[:model][:uUID]
-    self.serial_number = asset_info[:serialNumber]
-    self.status_id = asset_info[:presentLifecycleStatus][:uUID]
-    self.alarm_id = asset_info[:presentLifecycleStatus][:uUID]
-    self.site_id = asset_info[:registrationSite][:uUID]
+    self.id_in_source = asset_info.dig("infoSource","uUID")
+    self.short_name = asset_info.dig("shortName")
+    self.asset_type = asset_info.dig("type","uUID")
+    self.manufacturer = asset_info.dig("manufacturer","uUID")
+    self.model = asset_info.dig("model","uUID")
+    self.serial_number = asset_info.dig("serialNumber")
+    self.status_id = asset_info.dig("presentLifecycleStatus","uUID")
+    self.alarm_id = asset_info.dig("presentLifecycleStatus","uUID")
+    self.site_id = asset_info.dig("registrationSite","uUID")
     self.is_active = true
     self.functional_location = floc
   end
