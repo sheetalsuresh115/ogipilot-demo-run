@@ -12,7 +12,13 @@ include SyncAssetsConverter
 
   test "read sync assets and create equipment" do
     xml_doc = Nokogiri::XML(File.open(Settings.data.sync_asset_path))
-    assert_no_error_reported{ read_sync_bod(xml_doc, "//Asset") }
+    read_sync_bod(xml_doc, "//Asset")
+
+    xml_doc.xpath("//Asset/UUID").each do |noun|
+      asset = Equipment.find_by uuid: noun.text.strip
+      assert asset.present?
+    end
+
   end
 
 end

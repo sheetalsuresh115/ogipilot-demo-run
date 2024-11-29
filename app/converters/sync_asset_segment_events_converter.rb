@@ -7,15 +7,15 @@ module SyncAssetSegmentEventsConverter
       floc = FunctionalLocation.find_by uuid: noun.dig("assetSegmentEvent","segment","uUID")
 
       unless floc.present?
-        floc = create_missing_floc(noun.dig("assetSegmentEvent","segment", "SyncAssetSegmentEvents"))
+        floc = create_missing_floc(noun.dig("assetSegmentEvent","segment"), "SyncAssetSegmentEvents")
       end
 
-      if asset.present?
-        asset.functional_location =  floc
-        asset.save!
-      else
-        raise StandardError.new "Asset does not exist in system."
+      unless asset.present?
+        asset = create_missing_asset(noun.dig("assetSegmentEvent","asset"), "SyncAssetSegmentEvents")
       end
+
+      asset.functional_location =  floc
+      asset.save!
 
       Rails.logger.debug "\n Asset Segment Relation successfully added"
 

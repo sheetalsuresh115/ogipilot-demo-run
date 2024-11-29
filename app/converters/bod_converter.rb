@@ -18,10 +18,17 @@ module BodConverter
   # As discussed, creating this as a backup for missing flocs
   # comments are added to inspect further.
   def create_missing_floc(floc_info, noun_value)
-    floc = FunctionalLocation.new(uuid: floc_info[:uUID])
+    floc = FunctionalLocation.new(uuid: floc_info.dig("uUID"))
     floc.create_functional_location_with_minimal_info(floc_info, "Floc Missing: Floc added from #{noun_value}")
     floc.save!
     return floc
+  end
+
+  def create_missing_asset(asset_info, noun_value)
+    asset = Equipment.new(uuid: asset_info.dig("uUID"))
+    asset.create_equipment_with_minimal_info(asset_info, "Asset Missing: Asset added from #{noun_value}")
+    asset.save!
+    return asset
   end
 
 end

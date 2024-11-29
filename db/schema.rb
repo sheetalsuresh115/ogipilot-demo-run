@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_25_225139) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_29_043202) do
   create_table "actual_events", force: :cascade do |t|
     t.string "uuid"
     t.string "group_uuid"
@@ -22,13 +22,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_25_225139) do
     t.string "functional_location_id"
   end
 
-# Could not dump table "backup_table" because of following StandardError
-#   Unknown type 'NUM' for column 'created_at'
-
   create_table "break_down_structures", force: :cascade do |t|
     t.string "uuid"
-    t.string "from"
-    t.string "to"
+    t.string "from_uuid"
+    t.string "to_uuid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "short_name"
@@ -57,6 +54,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_25_225139) do
     t.string "manufacturer"
     t.string "model"
     t.string "serial_number"
+    t.string "comments"
   end
 
   create_table "functional_locations", force: :cascade do |t|
@@ -83,15 +81,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_25_225139) do
     t.index ["equipment_id"], name: "index_measurements_on_equipment_id"
   end
 
-  create_table "model_objects", force: :cascade do |t|
-    t.string "created_by"
-    t.string "modified_by"
-    t.datetime "date_created"
-    t.datetime "date_modified"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "ogi_pilot_sessions", force: :cascade do |t|
     t.string "consumer_session_id"
     t.string "end_point"
@@ -103,6 +92,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_25_225139) do
     t.string "provider_session_id"
     t.string "user_name"
     t.string "password_digest"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "user_id"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_foreign_key "actual_events", "functional_locations"

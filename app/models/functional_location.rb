@@ -4,7 +4,7 @@ class FunctionalLocation < ApplicationRecord
   validates :id_in_source, presence: false
   validates :description, presence: false
   validates :short_name, presence: true
-  validates :segment_type, presence: true
+  validates :segment_type, presence: false
   validates :status_id, presence: false
   validates :alarm_id, presence: false
   validates :is_active, presence: false
@@ -23,8 +23,8 @@ class FunctionalLocation < ApplicationRecord
   end
 
   def create_functional_location_with_minimal_info(segment_info, comments='')
-    self.short_name = segment_info[:shortName]
-    self.segment_type = segment_info[:type]
+    self.short_name = segment_info.dig("shortName")
+    self.segment_type = segment_info.dig("type")
     self.comments = comments
   end
 

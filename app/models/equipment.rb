@@ -1,16 +1,17 @@
 class Equipment < ApplicationRecord
 
   validates :uuid, presence: true
-  validates :id_in_source, presence: true
+  validates :id_in_source, presence: false
   validates :short_name, presence: true
-  validates :status_id, presence: true
-  validates :alarm_id, presence: true
-  validates :is_active, presence: true
+  validates :status_id, presence: false
+  validates :alarm_id, presence: false
+  validates :is_active, presence: false
   validates :asset_type, presence: false
   validates :manufacturer, presence: false
   validates :model, presence: false
   validates :serial_number, presence: false
   validates :site_id, presence: false
+  validates :comments, presence: false
   belongs_to :functional_location, optional: true
 
   def update_status_and_alarm(message)
@@ -35,6 +36,11 @@ class Equipment < ApplicationRecord
     self.site_id = asset_info[:registrationSite][:uUID]
     self.is_active = true
     self.functional_location = floc
+  end
+
+  def create_equipment_with_minimal_info(asset_info, comments='')
+    self.short_name = asset_info.dig("shortName")
+    self.comments = comments
   end
 
 end

@@ -10,9 +10,9 @@ module SyncBreakDownStructuresConverter
 
       noun.dig("breakdownStructure","connection").each do |connection|
 
-        bds = BreakDownStructure.find_by(uuid: noun.dig("breakdownStructure","uUID"), from: connection.dig("from","uUID"), to: connection.dig("to","uUID"))
+        bds = BreakDownStructure.find_by(uuid: noun.dig("breakdownStructure","uUID"), from_uuid: connection.dig("from","uUID"), to_uuid: connection.dig("to","uUID"))
         unless bds.present?
-          bds = BreakDownStructure.create(uuid: noun.dig("breakdownStructure","uUID"), from: connection.dig("from","uUID"), to: connection.dig("to","uUID"),
+          bds = BreakDownStructure.create(uuid: noun.dig("breakdownStructure","uUID"), from_uuid: connection.dig("from","uUID"), to_uuid: connection.dig("to","uUID"),
             short_name: noun.dig("breakdownStructure","shortName"), functional_location: floc)
         end
 

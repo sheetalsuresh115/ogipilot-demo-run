@@ -8,22 +8,33 @@ module SyncActualEventsConverter
         floc = create_missing_floc(noun.dig("actualEvent", "entity"), "SyncActualEvents")
       end
 
-      noun.dig("actualEvent", "attributeSetForEntity", "attributeSet", "group", "group").each do |group|
-        # Loops through all the attributes in all the groups and adds the actual events to the db.
-        group[:setAttribute].each do |event_info|
-          values = extract_from_value_content(event_info)
-          ActualEvent.create(uuid: noun.dig("actualEvent", "uUID"), group_uuid: group[:uUID], attribute_type: event_info.dig("type","uUID"),
-            value: values[:value], uom: values[:uom], functional_location: floc)
+      uom = ''
+      value = ''
+      if noun.dig("actualEvent","type","uUID") == "8993ef3d-00cf-4521-8e3b-9ebadf35a0e3" # Will update this to CONstant look up not uuid
+
+        noun.dig("actualEvent", "attributeSetForEntity", "attributeSet", "group", "group").each do |group|
+          # Loops through all the attributes in all the groups and adds the actual events to the db.
+          group[:setAttribute].each do |event_info|
+            values = extract_from_value_content(event_info)
+            ActualEvent.create(uuid: noun.dig("actualEvent", "uUID"), group_uuid: group[:uUID], attribute_type: event_info.dig("type","uUID"),
+              value: values[:value], uom: values[:uom], functional_location: floc)
+          end
+
         end
 
+        # Outer Group => Event Type
+        value = noun.dig("actualEvent","attributeSetForEntity","attributeSet","group","setAttribute","valueContent","enumerationItem","uUID")
+
+        ActualEvent.create(uuid: noun.dig("actualEvent","uUID"), group_uuid: noun.dig("actualEvent","attributeSetForEntity","attributeSet","group","uUID"),
+        attribute_type: noun.dig("actualEvent","type","uUID"), value: value, uom: uom, functional_location: floc)
+
+      elsif noun.dig("actualEvent","type","uUID") == "333402db-7002-447c-9b64-a5831477c83d"
+        # This indicates that there is an abnormality.
+
+        ActualEvent.create(uuid: noun.dig("actualEvent","uUID"), group_uuid: nil,
+        attribute_type: noun.dig("actualEvent","type","uUID"), value: value, uom: uom, functional_location: floc)
+
       end
-
-      # Outer Group => Event Type
-      value = noun.dig("actualEvent","attributeSetForEntity","attributeSet","group","setAttribute","valueContent","enumerationItem","uUID")
-      uom = ''
-      ActualEvent.create(uuid: noun.dig("actualEvent","uUID"), group_uuid: noun.dig("actualEvent","attributeSetForEntity","attributeSet","group","uUID"),
-      attribute_type: attribute.dig("type","uUID"), value: value, uom: uom, functional_location: floc)
-
       Rails.logger.debug "\n Actual Events successfully added"
 
     rescue StandardError => e
