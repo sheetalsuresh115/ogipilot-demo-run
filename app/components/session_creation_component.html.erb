@@ -1,47 +1,63 @@
-<% if @session.provider_session_id.present? %>
-    <h3>Edit session</h3>
-<% else %>
-    <h3>New session</h3>
-<% end %>
-<div class ="card">
-    <div class="card-body">
-        <%= form_with model: @session do |form| %>
-            <div class="mb-3 ">
-                <%= form.label :end_point, 'End Point:' %>
-                <%= form.text_field(:end_point, placeholder: 'End Point') %>
-                <% @session.errors.full_messages_for(:end_point).each do |message| %>
-                    <div class="text-danger"><%= message %></div>
-                <% end %>
-            </div>
-            <div class="mb-3">
-                <%= form.label :channel, 'Channel:'  %>
-                <%= form.text_field(:channel, placeholder: 'Channel') %>
-                <% @session.errors.full_messages_for(:channel).each do |message| %>
-                    <div class="text-danger"><%= message %></div>
-                <% end %>
-            </div>
-            <div class="mb-3">
-                <%= form.label :topic, 'Topic:' %>
-                <%= form.text_field(:topic, placeholder: 'Topic') %>
-                <% @session.errors.full_messages_for(:topic).each do |message| %>
-                    <div class="text-danger"><%= message %></div>
-                <% end %>
-            </div>
-            <div class="mb-3">
-                <%= form.label :message_type, 'Message Type:' %>
-                <%= form.text_field(:message_type, placeholder: 'Message Type') %>
-                <% @session.errors.full_messages_for(:message_type).each do |message| %>
-                    <div class="text-danger"><%= message %></div>
-                <% end %>
-            </div>
-            <div class="text-center">
-                <%= link_to "Back", :back %>
-                <% if @session.provider_session_id.present? %>
-                    <%= form.submit 'Update Session', class:"btn formsubmitbtn" %>
-                <% else %>
-                    <%= form.submit 'Create Session', class:"btn formsubmitbtn" %>
-                <% end %>
-            </div>
-        <% end %>
+<turbo-frame id="session_form">
+    <% if @session.provider_session_id.present? %>
+        <h3>Edit session</h3>
+    <% else %>
+        <h3>New session</h3>
+    <% end %>
+    <div class ="card">
+        <div class="card-body">
+            <%= form_with model: @session do |form| %>
+                <div class="mb-3 ">
+                    <%= form.label :end_point, t('end_point') + ":"  %>
+                    <%= form.text_field(:end_point, placeholder:  t('end_point')) %>
+                    <% @session.errors.full_messages_for(:end_point).each do |message| %>
+                        <div class="text-danger"><%= message %></div>
+                    <% end %>
+                </div>
+                <div class="mb-3">
+                    <%= form.label :channel, t('channel') + ":"  %>
+                    <%= form.text_field(:channel, placeholder:  t('channel')) %>
+                    <% @session.errors.full_messages_for(:channel).each do |message| %>
+                        <div class="text-danger"><%= message %></div>
+                    <% end %>
+                </div>
+                <div class="mb-3">
+                    <%= form.label :topic, t('topic') + ":" %>
+                    <%= form.text_field(:topic, placeholder: t('topic')) %>
+                    <% @session.errors.full_messages_for(:topic).each do |message| %>
+                        <div class="text-danger"><%= message %></div>
+                    <% end %>
+                </div>
+                <div class="mb-3">
+                    <%= form.label :message_type,  t('message_type') %>
+                    <%= form.text_field(:message_type, placeholder: t('message_type')) %>
+                    <% @session.errors.full_messages_for(:message_type).each do |message| %>
+                        <div class="text-danger"><%= message %></div>
+                    <% end %>
+                </div>
+                <div class="mb-3">
+                    <%= form.label :user_name, t('user_name') + ":" %>
+                    <%= form.text_field(:user_name, placeholder:  t('user_name')) %>
+                    <% @session.errors.full_messages_for(:user_name).each do |message| %>
+                        <div class="text-danger"><%= message %></div>
+                    <% end %>
+                </div>
+                <div class="mb-3">
+                    <%= form.label :password, t('password') + ":" %>
+                    <%= form.password_field(:password, placeholder:  t('password')) %>
+                    <% @session.errors.full_messages_for(:password).each do |message| %>
+                        <div class="text-danger"><%= message %></div>
+                    <% end %>
+                </div>
+                <div class="text-center">
+                    <%= link_to "Back", :back %>
+                    <% if @session.provider_session_id.present? %>
+                        <%= form.submit 'Update Session', class:"btn formsubmitbtn" %>
+                    <% else %>
+                        <%= form.submit 'Create Session', class:"btn formsubmitbtn" %>
+                    <% end %>
+                </div>
+            <% end %>
+        </div>
     </div>
-</div>
+</turbo-frame>

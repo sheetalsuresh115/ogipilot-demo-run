@@ -1,0 +1,6 @@
+data:
+  sync_asset_path: "C:/Users/sureshs/Visual Studio/Visual Studio Code Repo/ogipilot-demo-run/ogipilot-demo-run/data/SyncAssets.xml.erb"
+  sync_segment_path: "C:/Users/sureshs/Visual Studio/Visual Studio Code Repo/ogipilot-demo-run/ogipilot-demo-run/data/SyncSegments.xml.erb"
+  sync_asset_segment_events_path: "C:/Users/sureshs/Visual Studio/Visual Studio Code Repo/ogipilot-demo-run/ogipilot-demo-run/data/SyncAssetSegmentEvents.xml.erb"
+  sync_break_down_structures_path: "C:/Users/sureshs/Visual Studio/Visual Studio Code Repo/ogipilot-demo-run/ogipilot-demo-run/data/SyncBreakDownStructures.xml.erb"
+  sync_actual_events_path: "C:/Users/sureshs/Visual Studio/Visual Studio Code Repo/ogipilot-demo-run/ogipilot-demo-run/data/SyncActualEvents.xml.erb"

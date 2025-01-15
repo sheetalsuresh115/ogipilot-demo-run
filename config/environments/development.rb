@@ -62,6 +62,7 @@ Rails.application.configure do
   # Suppress logger output for asset requests.
   config.assets.quiet = true
 
+  config.assets.compile = true
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true
 
@@ -70,6 +71,15 @@ Rails.application.configure do
 
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
+
+  # Allow WebSocket connections only from localhost
+  config.action_cable.allowed_request_origins = ['http://localhost:3000']
+
+  # Use the async adapter for development or Redis
+  config.action_cable.url = "ws://localhost:3000/cable"
+
+  # Log ActionCable events for debugging
+  config.action_cable.log_tags = [-> request { "ActionCable: #{request.uuid}" }]
 
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true

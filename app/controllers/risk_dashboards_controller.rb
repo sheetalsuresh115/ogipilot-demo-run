@@ -1,74 +1,115 @@
 class RiskDashboardsController < ApplicationController
 
-  $break_down_structure_notification = 0
-  $measurements_notification = 0
-  $alarms_notification = 0
-  $active_components_notification = 0
-  $standby_components_notification = 0
+  TOPIC_PATHS = {
+    "SyncSegments" => Settings.data.sync_segment_path,
+    "SyncAssets" => Settings.data.sync_asset_path,
+    "SyncAssetSegmentEvents" => Settings.data.sync_asset_segment_events_path,
+    "SyncBreakDownStructures" => Settings.data.sync_break_down_structures_path,
+    "SyncActualEvents" => Settings.data.sync_actual_events_path
+  }.freeze
 
-  def index
-  end
-
-  def show
-    @equipments = Equipment.all
-  end
-
-  def load_measurements_component
-    # Assuming that once the SyncMeasurement gets deserialized into an object,
-    # we could fetch the timestamp and measurement data from it.
-
-    #TBD - websocket + live data
+  def measurements
+    # Using ActionCables, data will be live streamed.
+    measurements = Measurement.last(10)
     timestamp_labels = []
-    10.times do |i|
-      timestamp_labels << (Time.current + i.minutes).strftime("%H:%M:%p")
+    datasets = []
+    measurements.each do |measurement_obj|
+      timestamp_labels.push(measurement_obj.time_stamp)
+      datasets.push(measurement_obj.data)
     end
-
-    @labels = timestamp_labels
-    @datasets = [12, 19, 3, 5, 2, 12, 4, 8, 2, 20]
+    @timestamps = timestamp_labels
+    @vibrations = datasets
   end
 
-  def load_alarms_component
-    @alarms = Equipment.all
-  end
-
-  def load_active_component
-    @active = Equipment.all
-  end
-
-  def load_standby_component
-    @standby = Equipment.all
+  def active_standby
+    @equipments = Equipment.all
   end
 
   def baseline_risk
     begin
-      @session = OgiPilotSession.find_by topic: "BaseLineRisk"
-      #An equipment at risk is published.
-      #TBD
-      #This is supposed to be done externally, where SyncStatus messages will be published.
-      @update_equipment = Equipment.find_by(uuid:"9c6dd4d2-7cc4-4207-9d61-b7ec3f69d176")
-      @update_equipment.status_id = LifeCycleStatusHelper::DANGER
-      @update_equipment.alarm_id = AlarmHelper::ABNORMAL
-      if @session.provider_session_id.present?
-        publish_client = IsbmRestAdaptor::ProviderPublication.new
-        #In the future, for the DEMO this is where the BOD that contains Risk Data should be published.
-        posted_message_id = publish_client.post_publication(@session.provider_session_id, @update_equipment, [@session.topic])
-        puts "Posted message: #{posted_message_id}"
-
-        #This should be updated when the Job receives a message and has not read it yet.
-        #TBD
-        $break_down_structure_notification += 1
-        $alarms_notification += 1
-        $measurements_notification += 1
-        redirect_to risk_dashboards_path
+      session = OgiPilotSession.find_by topic: "BaseLineRisk"
+      if session && session.provider_session_exists
+        session.post_base_line_risk_message
       else
-        redirect_to risk_dashboards_path, alert: 'Please open a valid session!'
+        flash[:alert] = "Please open a valid session!"
       end
+      redirect_back(fallback_location: root_path)
 
-    rescue IsbmAdaptor::IsbmFault => e
-      fault_message = extract_fault_message(e.response_body)
-      # for REST path, cannot tell difference between no session and no message, so make a guess
-      return check_session_fault_message_not_found(fault_message) if e.code == 404
-      handle_session_access_api_error(e.code, fault_message)
+    rescue StandardError, IsbmAdaptor::ChannelFault, IsbmAdaptor::SessionFault, IsbmAdaptor::ParameterFault,
+      IsbmAdaptor::IsbmFault => e
+      logger.debug " Exception during risk #{e}"
     end
   end
+
+  def possible_failure
+    begin
+      session = OgiPilotSession.find_by topic: "PossibleFailure"
+      if session && session.provider_session_exists
+        session.post_possible_failure_message
+      else
+        flash[:alert] = "Please open a valid session!"
+      end
+      redirect_back(fallback_location: root_path)
+
+    rescue StandardError, IsbmAdaptor::ChannelFault, IsbmAdaptor::SessionFault, IsbmAdaptor::ParameterFault,
+      IsbmAdaptor::IsbmFault => e
+      logger.debug " Exception during failure #{e}"
+    end
+  end
+
+  def failure
+    begin
+      session = OgiPilotSession.find_by topic: "Failure"
+      if session && session.provider_session_exists
+        session.post_failure_message
+      else
+        flash[:alert] = "Please open a valid session!"
+      end
+      redirect_back(fallback_location: root_path)
+
+    rescue StandardError, IsbmAdaptor::ChannelFault, IsbmAdaptor::SessionFault, IsbmAdaptor::ParameterFault,
+      IsbmAdaptor::IsbmFault => e
+      logger.debug " Exception during failure #{e}"
+    end
+  end
+
+  def segment
+    session = OgiPilotSession.find_by topic: "SyncSegments"
+    post_message(session)
+  end
+
+  def asset
+    session = OgiPilotSession.find_by topic: "SyncAssets"
+    post_message(session)
+  end
+
+  def asset_segment_event
+    session = OgiPilotSession.find_by topic: "SyncAssetSegmentEvents"
+    post_message(session)
+  end
+
+  def break_down_structure
+    session = OgiPilotSession.find_by topic: "SyncBreakDownStructures"
+    post_message(session)
+  end
+
+  def actual_event
+    session = OgiPilotSession.find_by topic: "SyncActualEvents"
+    post_message(session)
+  end
+
+  def post_message(session)
+
+    if session && session.provider_session_exists
+      data_path = TOPIC_PATHS[session.topic]
+      session.post_sync_message(data_path)
+    else
+      flash[:alert] = "Please open a valid session!"
+    end
+    redirect_back(fallback_location: root_path)
+    rescue StandardError, IsbmAdaptor::ChannelFault, IsbmAdaptor::SessionFault, IsbmAdaptor::ParameterFault,
+      IsbmAdaptor::IsbmFault => e
+      logger.debug " Exception during publishing syncSegment #{e}"
+  end
+
 end

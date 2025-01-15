@@ -1,49 +1,11 @@
 <div class="container">
     <div>
-        <h2 class="text-center">Measurements</h1>
-        <div id="bsb-chart-1">
-            <canvas id="vibrationsChart" width="960" height="200"></canvas>
+        <h2 class="text-center">Measurements</h2>
+        <div id="timestamps-data" data-timestamps="<%= @timestamps %>"></div>
+        <div id="vibrations-data" data-vibrations="<%= @vibrations %>"></div>
+
+        <div data-controller="measurements">
+            <canvas id="vibrationsChart" width="800" height="450"></canvas>
         </div>
     </div>
 </div>
-
-<script>
-var ctx = document.getElementById('vibrationsChart');
-var vibrationsChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: <%= @labels.to_json.html_safe %>, // This is the label for the X-axis
-        datasets: [{ 
-            label: ' Vibrations ',
-            data: <%= @datasets.to_json.html_safe %>,
-            fill:false,
-            borderColor:"#308af3",
-            pointBackgroundColor: "#308af3",
-            pointBorderWidth: 2,
-            pointHoverBackgroundColor: "#fff",
-            pointHoverBorderWidth: 2,
-            lineTension:0.05
-            }]
-    },
-    options: {
-        legend: { display: false },
-        scales: {
-            xAxes: [{
-                gridLines: { display:false },
-            }],
-            yAxes: [{
-                scaleLabel: {
-                    display: true,
-                    labelString: 'Vibration Level (units)', // This is the label for the Y-axis
-                    fontColor: '#666',
-                    fontSize: 14
-                },
-                gridLines: {
-                color: "rgba(0, 0, 0, .05)",
-                }
-            }]
-        },
-    }
-});
-
-</script>
