@@ -4,7 +4,6 @@ import "controllers"
 import * as bootstrap from "bootstrap"
 
 document.addEventListener('DOMContentLoaded', () => {
-  debugger
   document.querySelectorAll('.nav-link').forEach(navLink => {
     navLink.addEventListener('click', function(event) {
       event.preventDefault();
@@ -16,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   function loadComponent(url) {
-    debugger
     fetch(url)
       .then(response => response.text())
       .then(html => {

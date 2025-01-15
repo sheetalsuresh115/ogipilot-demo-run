@@ -1,6 +1,6 @@
 require "test_helper"
 
-class OgiPilotSessionTest < ActiveSupport::TestCase
+class PubSubSchedulerJobTest < ActiveJob::TestCase
   # test "the truth" do
   #   assert true
   # end
