@@ -176,6 +176,7 @@ GEM
       racc (~> 1.4)
     nokogiri (1.16.5-x86_64-linux)
       racc (~> 1.4)
+    os (1.1.4)
     parallel (1.25.1)
     parser (3.3.2.0)
       ast (~> 2.4.1)
@@ -310,7 +311,7 @@ GEM
     sqlite3 (1.7.3-x86_64-linux)
     stimulus-rails (1.3.3)
       railties (>= 6.0.0)
-    stringio (3.1.0)
+    stringio (3.1.2)
     strscan (3.1.0)
     thor (1.3.1)
     tilt (2.4.0)
@@ -351,7 +352,7 @@ PLATFORMS
 DEPENDENCIES
   bcrypt (~> 3.1.7)
   bootsnap
-  bootstrap
+  bootstrap (~> 5.3)
   capybara
   config
   cssbundling-rails
@@ -360,6 +361,7 @@ DEPENDENCIES
   isbm2_adaptor_rest (~> 2.0.1.2)
   jbuilder
   nokogiri
+  os
   puma (>= 5.0)
   rack (~> 2.0, >= 2.0.6)
   rack-contrib (~> 2.1, >= 2.1.0)
@@ -385,7 +387,7 @@ DEPENDENCIES
   web-console
 
 RUBY VERSION
-   ruby 3.2.4p170
+   ruby 3.3.3p89
 
 BUNDLED WITH
    2.5.10

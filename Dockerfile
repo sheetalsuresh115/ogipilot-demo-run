@@ -2,20 +2,22 @@
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
 ARG RUBY_VERSION=3.2.4
-FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim as base
+FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim AS base
 
 # Rails app lives here
 WORKDIR /rails
 
 # Set production environment
+ARG BUNDLE_WITHOUT=development
 ENV RAILS_ENV="production" \
-    BUNDLE_DEPLOYMENT="1" \
+#    BUNDLE_DEPLOYMENT="1" \ # strangely this seems to expect all the gems to be available locally, but the doc does not indicate that
     BUNDLE_PATH="/usr/local/bundle" \
-    BUNDLE_WITHOUT="development"
+    BUNDLE_WITHOUT="${BUNDLE_WITHOUT}"
+# excluding test seems to be causing problems with requires; is a gem in the wrong group?
 
 
 # Throw-away build stage to reduce size of final image
-FROM base as build
+FROM base AS build
 
 # Install packages needed to build gems and node modules
 RUN apt-get update -qq && \
@@ -30,10 +32,13 @@ RUN curl -sL https://github.com/nodenv/node-build/archive/master.tar.gz | tar xz
     npm install -g yarn@$YARN_VERSION && \
     rm -rf /tmp/node-build-master
 
+# Install local gems
+COPY vendor/isbm2_adaptor_rest-2.0.1.2.gem ./vendor/cache/
+
 # Install application gems
 COPY Gemfile Gemfile.lock ./
 RUN bundle install && \
-    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
+    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git ./vendor/cache && \
     bundle exec bootsnap precompile --gemfile
 
 # Install node modules
@@ -63,9 +68,12 @@ RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y curl libsqlite3-0 libvips && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
-# Copy built artifacts: gems, application
+# Copy built artifacts: gems, application, nodejs (for autoprefixer dependency, to be removed)
 COPY --from=build /usr/local/bundle /usr/local/bundle
 COPY --from=build /rails /rails
+COPY --from=build /usr/local/node /usr/local/node
+
+ENV PATH=/usr/local/node/bin:$PATH
 
 # Run and own only the runtime files as a non-root user for security
 RUN useradd rails --create-home --shell /bin/bash && \

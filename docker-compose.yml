@@ -1,0 +1,124 @@
+version: '3.4'
+
+services:
+  # Dev service that runs everything all in one with the Procfile.dev
+  # Alternatively, hold open the image and connect a shell to execute commands
+  app-dev:
+    image: ogipilotdemorun:dev
+    build:
+      context: .
+      args:
+        BUNDLE_WITHOUT:
+      dockerfile: ./Dockerfile
+    profiles:
+      - dev
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/rails
+      - sqlite_data:/rails/storage
+      - gem_cache:/usr/local/bundle
+      - node_modules:/rails/node_modules
+    environment:
+      - HOST=0.0.0.0
+      - RAILS_ENV=development
+      - REDIS_URL=redis://redis:6379/1
+      # If the redis server is running on the host machine
+      # - REDIS_URL=redis://host.docker.internal:6379/1
+    depends_on:
+      - redis
+    init: true
+    # command: ./bin/rails server
+    command: ./bin/dev
+    # command: tail -f /dev/null
+    user: root
+
+  # Alternative app service for integration testing.
+  # Sidekiq worker as separate service.
+  # TODO: Update to use postgres database once the app supports it
+  app:
+    image: ogipilotdemorun:dev
+    build:
+      context: .
+      args:
+        BUNDLE_WITHOUT:
+      dockerfile: ./Dockerfile
+    profiles:
+      - integration
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/rails
+      - sqlite_data:/rails/storage
+      - gem_cache:/usr/local/bundle
+      - node_modules:/rails/node_modules
+    environment:
+      - RAILS_ENV=development
+      - REDIS_URL=redis://redis:6379/1
+      # If the redis server is running on the host machine
+      # - REDIS_URL=redis://host.docker.internal:6379/1
+    depends_on:
+      - redis
+      # - database
+    init: true
+    command: ./bin/rails server
+    user: root # sprockets regenerates in dev mode.
+
+  sidekiq:
+    image: ogipilotdemorun:dev
+    profiles:
+      - integration
+    volumes:
+      - .:/rails
+      - sqlite_data:/rails/storage
+      - gem_cache:/usr/local/bundle
+      - node_modules:/rails/node_modules
+    environment:
+      - RAILS_ENV=development
+      - REDIS_URL=redis://redis:6379/1
+      # If the redis server is running on the host machine
+      # - REDIS_URL=redis://host.docker.internal:6379/1
+    depends_on:
+      - app
+      - redis
+      # - database
+    init: true
+    command: bundle exec sidekiq -q default
+
+
+  # Runs admin tools such as `rails db:migrate`
+  db-migrate:
+    image: ogipilotdemorun:dev
+    profiles:
+      - tools
+    volumes:
+      - .:/rails
+      - sqlite_data:/rails/storage
+      - gem_cache:/usr/local/bundle
+      - node_modules:/rails/node_modules
+    environment:
+      - RAILS_ENV=development
+    command: ./bin/rails db:prepare
+    # command: bundle install
+    user: root
+
+  redis:
+    image: redis:alpine
+    profiles:
+      - dev
+      - integration
+
+  # Postgres database when configured for the app itself
+  # database:
+  #   image: TBD
+  #   profiles:
+  #     - integration
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  gem_cache:
+  node_modules:
+  sqlite_data:
+  postgres_data:
+  

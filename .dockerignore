@@ -35,3 +35,7 @@
 /app/assets/builds/*
 !/app/assets/builds/.keep
 /public/assets
+
+# Ignore docker and compose files
+/Dockerfile*
+/docker-compose*.yml

@@ -1,8 +1,10 @@
 #!/bin/bash -e
 
 # If running the rails server then create or migrate existing database
+# and ensure the IP binding is correct, even if dev is set.
 if [ "${1}" == "./bin/rails" ] && [ "${2}" == "server" ]; then
   ./bin/rails db:prepare
+  set -- "${@}" '-b' '0.0.0.0'
 fi
 
 exec "${@}"
